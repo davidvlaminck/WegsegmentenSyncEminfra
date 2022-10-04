@@ -40,10 +40,17 @@ if __name__ == '__main__':
     #list_segmenten = list(filter(lambda x: x.id in filter_ids, list_segmenten))
 
     start = time.time()
-    #list_segmenten = list(sorted(list_segmenten, key=lambda x: (x.ident8, x.begin.opschrift, x.begin.afstand)))
-    list_segmenten = processor.clean_list(list_segmenten)
+    list_segmenten = processor.remove_non_main_roads(list_segmenten)
+    for i in range(4):
+        list_segmenten = processor.clean_list(list_segmenten)
+    list_segmenten = processor.sort_list(list_segmenten)
     end = time.time()
     print(colored(f'Time to combine Python dataclass objects: {round(end - start, 2)}', 'yellow'))
+
+    start = time.time()
+    list_segmenten = processor.keep_one_side(list_segmenten)
+    end = time.time()
+    print(colored(f'Time to remove one side (double data): {round(end - start, 2)}', 'yellow'))
 
     with open("segmenten.csv", "w") as f:
         f.write('ident8;begin.opschrift;begin.afstand;eind.opschrift;eind.afstand;gebied\n')
