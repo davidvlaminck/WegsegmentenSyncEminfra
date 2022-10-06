@@ -123,8 +123,19 @@ class JsonToWegsegmentProcessor:
                 down_to = candidate.eind.opschrift + (candidate.eind.afstand / 1000)
                 if (abs(up_from - down_from) + abs(up_to - down_to)) < margin:
                     list_segmenten.remove(candidate)
+                    continue
 
-        # remove roads that are within their counterpart segment
+                if abs(up_from - down_from) < margin / 2 or abs(up_to - down_to) < margin / 2:
+                    # move the segment a little to make comparison easier
+                    if up_from > down_from:
+                        up_to = up_to - up_from + down_from
+                    elif down_from > up_from:
+                        up_to = up_to - down_from + up_from
+
+                    if down_to > up_to:
+                        list_segmenten.remove(up_segment)
+                    elif down_to < up_to:
+                        list_segmenten.remove(candidate)
 
         return list_segmenten
 

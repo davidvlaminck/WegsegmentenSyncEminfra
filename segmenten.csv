@@ -2,14 +2,11 @@ ident8;begin.opschrift;begin.afstand;eind.opschrift;eind.afstand;gebied
 A0010001;0.5;-131;12.1;-6;Agentschap Wegen en Verkeer - AWV212
 A0010001;12.1;-6;21.6;-27;Agentschap Wegen en Verkeer - AWV112
 A0010001;21.6;-27;35.1;50;Agentschap Wegen en Verkeer - AWV121
-A0010001;45.3;-131;47.1;26;Agentschap Wegen en Verkeer - AWV121
-A0010001;47.1;26;79.6;27;Agentschap Wegen en Verkeer - AWV123
 A0010002;45.3;-131;47.4;2;Agentschap Wegen en Verkeer - AWV121
 A0010002;47.4;2;79.6;7;Agentschap Wegen en Verkeer - AWV123
 A0019011;0.1;0;0.1;797;Agentschap Wegen en Verkeer - AWV212
 A0020001;0;0;50;-9;Agentschap Wegen en Verkeer - AWV720
 A0020001;50;-9;86.7;4;Agentschap Wegen en Verkeer - AWV214
-A0020001;86.7;4;87.4;179;Agentschap Wegen en Verkeer - AWV213
 A0020002;86.7;14;87.7;268;Agentschap Wegen en Verkeer - AWV213
 A0030001;3.3;-2448;3.3;12;Brussels Gewest - Brussels Gewest
 A0030001;3.3;13;44.1;79;Agentschap Wegen en Verkeer - AWV213
@@ -27,7 +24,6 @@ A0080001;7.6;45;7.6;25890;Waals Gewest - Waals Gewest
 A0100001;0;-79;14.9;22;Agentschap Wegen en Verkeer - AWV212
 A0100001;14.9;22;72.1;38;Agentschap Wegen en Verkeer - AWV411
 A0100001;72.1;38;104.5;29;Agentschap Wegen en Verkeer - AWV311
-A0110001;64.1;-80;72.7;-38;Agentschap Wegen en Verkeer - AWV121
 A0110001;72.7;-38;107.2;0;Agentschap Wegen en Verkeer - AWV411
 A0110001;107.2;0;134.4;-1;Agentschap Wegen en Verkeer - AWV413
 A0110001;134.4;-1;154.5;105;Agentschap Wegen en Verkeer - AWV311
@@ -37,7 +33,6 @@ A0120001;1.3;-42;15.8;-32;Agentschap Wegen en Verkeer - AWV212
 A0120001;15.8;-32;23;-84;Agentschap Wegen en Verkeer - AWV112
 A0120001;23;-84;35.7;141;Agentschap Wegen en Verkeer - AWV121
 A0120001;37;0;54.1;72;Agentschap Wegen en Verkeer - AWV121
-A0120002;22.9;16;35.1;77;Agentschap Wegen en Verkeer - AWV121
 A0129251;0;0;1.2;16;Agentschap Wegen en Verkeer - AWV121
 A0130001;0;-6;9.4;79;Agentschap Wegen en Verkeer - AWV121
 A0130001;9.4;79;48.3;-43;Agentschap Wegen en Verkeer - AWV114
@@ -46,24 +41,18 @@ A0130001;100.2;0;100.2;698;Waals Gewest - Waals Gewest
 A0140001;0;0;26.3;50;Agentschap Wegen en Verkeer - AWV312
 A0140001;26.3;50;97.4;2;Agentschap Wegen en Verkeer - AWV411
 A0140001;97.4;2;99.9;842;Agentschap Wegen en Verkeer - AWV121
-A0140002;97.4;5;99.9;68;Agentschap Wegen en Verkeer - AWV121
-A0170001;17.6;-2638;17.6;-93;Waals Gewest - Waals Gewest
 A0170001;17.6;-93;49;0;Agentschap Wegen en Verkeer - AWV312
 A0170001;49;0;68;74;Agentschap Wegen en Verkeer - AWV311
 A0170002;17.6;-2278;17.6;-98;Waals Gewest - Waals Gewest
 A0180001;5.5;-93;47.3;59;Agentschap Wegen en Verkeer - AWV311
-A0180002;5.5;-87;46.9;60;Agentschap Wegen en Verkeer - AWV311
 A0190001;0.2;0;22.9;246;Agentschap Wegen en Verkeer - AWV312
-A0210001;9.5;-1;58;19;Agentschap Wegen en Verkeer - AWV125
 A0210002;10;-65;58;12;Agentschap Wegen en Verkeer - AWV125
 A0250001;0;0;0.5;14;Agentschap Wegen en Verkeer - AWV720
 A0250001;0.5;14;0.5;5010;Waals Gewest - Waals Gewest
-A1120001;0.6;-574;3.2;252;Agentschap Wegen en Verkeer - AWV121
 A1120002;0.2;-998;3.2;306;Agentschap Wegen en Verkeer - AWV121
 A2010001;1.1;-1099;1.1;-91;Brussels Gewest - Brussels Gewest
 A2010001;1.1;-91;4.2;48;Agentschap Wegen en Verkeer - AWV212
 B1010001;0;0;1.8;2779;Agentschap Wegen en Verkeer - AWV112
-B2010001;0;0;0;1977;Brussels Gewest - Brussels Gewest
 B2010002;0;0;0;2436;Brussels Gewest - Brussels Gewest
 B4010001;0;-31;2.4;18;Agentschap Wegen en Verkeer - AWV411
 B4020001;0.1;0;2.9;55;Agentschap Wegen en Verkeer - AWV411
@@ -73,11 +62,9 @@ N0010001;4.4;-4419;4.4;-84;Brussels Gewest - Brussels Gewest
 N0010001;4.4;-84;15.5;-15;Agentschap Wegen en Verkeer - AWV212
 N0010001;15.5;-15;17.3;6;Agentschap Wegen en Verkeer - AWV112
 N0010001;18.8;-27;23.3;45;Agentschap Wegen en Verkeer - AWV112
-N0010001;23.3;45;40.3;24;Agentschap Wegen en Verkeer - AWV121
 N0010001;40.3;24;40.3;3350;Gemeente - GemeenteAntwerpen
 N0010001;44.4;0;49.1;-206;Agentschap Wegen en Verkeer - AWV121
 N0010001;49.1;-206;70.1;26;Agentschap Wegen en Verkeer - AWV123
-N0010002;23.3;45;38.2;0;Agentschap Wegen en Verkeer - AWV121
 N0010002;38.7;0;40.3;15;Agentschap Wegen en Verkeer - AWV121
 N0019011;0;0;0;571;Gemeente - GemeenteMechelen
 N0019021;0;0;0;226;Gemeente - GemeenteMechelen
@@ -133,16 +120,13 @@ N0080001;82;24;84.9;10;Agentschap Wegen en Verkeer - AWV312
 N0080001;87.7;0;105.8;22;Agentschap Wegen en Verkeer - AWV312
 N0080001;105.8;22;113.6;42;Agentschap Wegen en Verkeer - AWV313
 N0080001;113.6;42;117.7;-87;Gemeente - GemeenteIeper
-N0080001;117.7;-87;145.2;-57;Agentschap Wegen en Verkeer - AWV313
 N0080001;145.2;-57;145.2;-56;Agentschap Wegen en Verkeer - AWV315
-N0080001;145.2;-56;149.2;-6;Agentschap Wegen en Verkeer - AWV313
 N0080001;149.2;-6;152.5;7;Agentschap Wegen en Verkeer - AWV315
 N0080002;117.7;-87;149.2;-6;Agentschap Wegen en Verkeer - AWV313
 N0089031;0;0;1.7;51;Agentschap Wegen en Verkeer - AWV412
 N0089051;0;0;0;854;Gemeente - GemeenteAvelgem
 N0089061;0;-4;0.1;19;Agentschap Wegen en Verkeer - AWV312
 N0089071;0.4;-45;1.8;49;Agentschap Wegen en Verkeer - AWV313
-N0089071;1.8;49;1.8;50;Gemeente - GemeenteVeurne
 N0089071;1.8;49;1.8;49;Agentschap Wegen en Verkeer - AWV315
 N0089071;1.8;50;1.8;457;Gemeente - GemeenteVeurne
 N0089081;0;-2;1.1;641;Gemeente - GemeenteKoksijde
@@ -160,7 +144,6 @@ N0090001;92.9;67;95.4;-51;Gemeente - GemeenteBrugge
 N0090001;95.4;-51;106.4;13;Agentschap Wegen en Verkeer - AWV311
 N0090001;106.4;13;116.6;55;Agentschap Wegen en Verkeer - AWV315
 N0099021;0;-14;0.8;51;Agentschap Wegen en Verkeer - AWV212
-N0099022;0;-21;0.1;9;Agentschap Wegen en Verkeer - AWV212
 N0099031;0;0;0;1957;Gemeente - GemeenteAsse
 N0099041;0;0;0;2218;Gemeente - GemeenteMaldegem
 N0099051;0;0;0;1217;Gemeente - GemeenteAsse
@@ -179,7 +162,6 @@ N0100001;11.7;-117;17.2;41;Agentschap Wegen en Verkeer - AWV123
 N0100001;17.2;41;28.9;-25;Agentschap Wegen en Verkeer - AWV112
 N0100001;28.9;-25;34.4;40;Agentschap Wegen en Verkeer - AWV214
 N0100001;34.5;-62;49;78;Agentschap Wegen en Verkeer - AWV214
-N0109011;0;0;0;265;Gemeente - GemeenteAarschot
 N0109011;0;266;0;323;Gemeente - GemeenteAarschot
 N0110001;0;-9;10.9;94;Agentschap Wegen en Verkeer - AWV123
 N0120001;1;-992;1;-87;Gemeente - GemeenteAntwerpen
@@ -285,16 +267,12 @@ N0340001;0.2;-203;0.3;-36;Gemeente - GemeenteKnokke-Heist
 N0340001;0.3;-36;12.7;-15;Agentschap Wegen en Verkeer - AWV311
 N0340001;12.7;-15;13.9;-87;Gemeente - GemeenteBlankenberge
 N0340001;13.9;-87;14.4;46;Agentschap Wegen en Verkeer - AWV311
-N0340001;14.4;46;31.3;78;Agentschap Wegen en Verkeer - AWV315
 N0340001;31.5;-51;32.2;22;Agentschap Wegen en Verkeer - AWV315
 N0340001;32.2;22;32.2;98;Gemeente - GemeenteOostende
 N0340001;33;-12;33.2;21;Agentschap Wegen en Verkeer - AWV315
 N0340001;33.2;21;36.2;-36;Gemeente - GemeenteOostende
-N0340001;36.2;-36;63.8;-4;Agentschap Wegen en Verkeer - AWV315
 N0340001;63.8;-4;70.1;10;Agentschap Wegen en Verkeer - AWV313
-N0340002;14.4;24;17.9;0;Agentschap Wegen en Verkeer - AWV315
 N0340002;21.9;0;31.3;78;Agentschap Wegen en Verkeer - AWV315
-N0340002;36.2;-37;54.1;0;Agentschap Wegen en Verkeer - AWV315
 N0340002;55;0;63.8;-3;Agentschap Wegen en Verkeer - AWV315
 N0349011;0;-17;1.8;46;Agentschap Wegen en Verkeer - AWV311
 N0349021;0;0;0.5;14;Agentschap Wegen en Verkeer - AWV311
@@ -305,20 +283,16 @@ N0349071;0;-21;0.4;0;Agentschap Wegen en Verkeer - AWV315
 N0349091;0;-17;0.6;26;Agentschap Wegen en Verkeer - AWV311
 N0349251;0;-17;8.2;74;Agentschap Wegen en Verkeer - AWV315
 N0349261;0;0;1.8;47;Agentschap Wegen en Verkeer - AWV315
-N0350001;0;-15845;2.5;46;Agentschap Wegen en Verkeer - AWV313
 N0350001;2.5;46;3.1;48;Agentschap Wegen en Verkeer - AWV315
 N0350001;3.1;48;5.6;98;Agentschap Wegen en Verkeer - AWV313
 N0350001;5.6;98;6.3;-1;Gemeente - GemeenteVeurne
-N0350001;6.3;-1;38.7;-25;Agentschap Wegen en Verkeer - AWV313
 N0350001;38.7;-25;53.5;28;Agentschap Wegen en Verkeer - AWV316
 N0350001;53.5;28;53.5;1500;Gemeente - GemeentePittem
 N0350001;55;-7;62.4;-46;Agentschap Wegen en Verkeer - AWV316
 N0350001;62.4;-46;72.5;43;Agentschap Wegen en Verkeer - AWV413
 N0350001;72.5;43;78.7;70;Agentschap Wegen en Verkeer - AWV411
-N0350002;0;-15845;1.6;21;Agentschap Wegen en Verkeer - AWV313
 N0350002;0;-8;21.9;-10;Agentschap Wegen en Verkeer - AWV313
 N0350002;1.6;21;2.5;46;Agentschap Wegen en Verkeer - AWV313
-N0350002;6.3;0;0;-8;Agentschap Wegen en Verkeer - AWV313
 N0350002;21.9;-10;38.7;-25;Agentschap Wegen en Verkeer - AWV313
 N0359021;0;-18;1;112;Agentschap Wegen en Verkeer - AWV316
 N0359031;0;-15;1.5;3;Agentschap Wegen en Verkeer - AWV316
@@ -373,11 +347,8 @@ N0430001;2.7;-181;11.4;27;Agentschap Wegen en Verkeer - AWV411
 N0430001;11.4;27;27.7;33;Agentschap Wegen en Verkeer - AWV413
 N0430001;27.7;33;40.8;49;Agentschap Wegen en Verkeer - AWV312
 N0430001;41.9;-27;51.4;96;Agentschap Wegen en Verkeer - AWV312
-N0430001;51.4;96;51.4;411;Waals Gewest - Waals Gewest
-N0430002;41.9;-27;49.1;-33;Agentschap Wegen en Verkeer - AWV312
 N0430002;49.1;-33;51.4;411;Waals Gewest - Waals Gewest
 N0440001;0.1;-10;18;0;Agentschap Wegen en Verkeer - AWV413
-N0440002;0.1;-10;16.9;0;Agentschap Wegen en Verkeer - AWV413
 N0449011;0;-21;1.1;33;Agentschap Wegen en Verkeer - AWV413
 N0450001;0.1;-43;7.4;90;Agentschap Wegen en Verkeer - AWV415
 N0450001;13;-104;16.5;87;Agentschap Wegen en Verkeer - AWV415
@@ -395,7 +366,6 @@ N0480001;14.4;-7;15.3;28;Gemeente - GemeenteRonse
 N0480001;15.3;28;16.6;41;Agentschap Wegen en Verkeer - AWV412
 N0489021;0;0;1.5;28;Agentschap Wegen en Verkeer - AWV412
 N0489031;0;-3;0.8;51;Agentschap Wegen en Verkeer - AWV412
-N0490001;79;-132;84.4;0;Agentschap Wegen en Verkeer - AWV311
 N0490002;79.1;45;84.4;0;Agentschap Wegen en Verkeer - AWV311
 N0499011;0.3;-61;2.1;2274;Agentschap Wegen en Verkeer - AWV121
 N0499031;0.1;-17;0.6;30;Gemeente - GemeenteKnokke-Heist
@@ -413,7 +383,6 @@ N0509061;0;0;0;1452;Gemeente - GemeenteOostkamp
 N0509071;0;0;0.9;37;Agentschap Wegen en Verkeer - AWV311
 N0509081;0.1;-61;0.2;80;Agentschap Wegen en Verkeer - AWV312
 N0570001;0;0;3.3;68;Agentschap Wegen en Verkeer - AWV412
-N0580001;8.1;-8100;8.1;-4;Waals Gewest - Waals Gewest
 N0580001;8.1;-4;10.6;85;Agentschap Wegen en Verkeer - AWV312
 N0580001;20;0;27.3;85;Agentschap Wegen en Verkeer - AWV312
 N0580001;27.3;85;27.3;87;Agentschap Wegen en Verkeer - AWV313
@@ -474,7 +443,6 @@ N0769101;0;0;0;176;Gemeente - GemeenteBree
 N0769111;0;0;0.8;9;Agentschap Wegen en Verkeer - AWV719
 N0770001;2.5;-93;4.3;27;Agentschap Wegen en Verkeer - AWV720
 N0770001;4.3;27;16.6;69;Agentschap Wegen en Verkeer - AWV718
-N0779011;0;-4;1.4;91;Agentschap Wegen en Verkeer - AWV718
 N0779011;0;2405;0;2836;Gemeente - GemeenteLanaken
 N0779011;1.4;91;1.4;92;Agentschap Wegen en Verkeer - AWV718
 N0779021;0.1;0;0.8;6;Agentschap Wegen en Verkeer - AWV718
@@ -630,7 +598,6 @@ N1730001;0;-19;6.2;68;Agentschap Wegen en Verkeer - AWV121
 N1740001;0;-1;8.3;32;Agentschap Wegen en Verkeer - AWV114
 N1740001;8.3;32;15.1;5;Agentschap Wegen en Verkeer - AWV717
 N1740001;15.1;5;18;140;Agentschap Wegen en Verkeer - AWV214
-N1770001;0.4;-69;13.8;28;Agentschap Wegen en Verkeer - AWV121
 N1770001;13.8;28;15.4;67;Agentschap Wegen en Verkeer - AWV112
 N1770002;0.1;-46;13.8;27;Agentschap Wegen en Verkeer - AWV121
 N1779011;0;0;0;175;Gemeente - GemeenteBoom
@@ -650,8 +617,6 @@ N2070001;0;-5;4.2;109;Agentschap Wegen en Verkeer - AWV211
 N2080001;0.5;-499;3.9;165;Agentschap Wegen en Verkeer - AWV211
 N2090001;1.6;-1403;1.6;-81;Brussels Gewest - Brussels Gewest
 N2090001;1.6;-81;1.8;10;Agentschap Wegen en Verkeer - AWV212
-N2110001;0;-3;12.1;0;Agentschap Wegen en Verkeer - AWV212
-N2110001;12.4;0;23.8;42;Agentschap Wegen en Verkeer - AWV212
 N2110002;0;-33;23.8;42;Agentschap Wegen en Verkeer - AWV212
 N2119011;0.2;-134;0.4;301;Agentschap Wegen en Verkeer - AWV212
 N2119021;0;-9;0.8;87;Agentschap Wegen en Verkeer - AWV212
@@ -681,8 +646,6 @@ N2310001;0;-10;7.6;173;Agentschap Wegen en Verkeer - AWV211
 N2340001;0;-16;2.4;102;Agentschap Wegen en Verkeer - AWV214
 N2340001;2.4;102;2.4;237;Gemeente - GemeenteBoutersem
 N2350001;5.5;-5512;5.5;-81;Brussels Gewest - Brussels Gewest
-N2350001;5.5;-81;11.1;8;Agentschap Wegen en Verkeer - AWV211
-N2350001;11.1;8;13.2;31;Waals Gewest - Waals Gewest
 N2350002;5.5;-81;13.2;-2;Agentschap Wegen en Verkeer - AWV211
 N2350002;13.2;-2;13.2;31;Waals Gewest - Waals Gewest
 N2490001;0;-14;2.4;24;Agentschap Wegen en Verkeer - AWV211
@@ -943,7 +906,7 @@ N3959041;0;-9;1.4;77;Agentschap Wegen en Verkeer - AWV312
 N3959051;0;0;0;111;Agentschap Wegen en Verkeer - AWV312
 N3960001;0;-10;10.6;-31;Agentschap Wegen en Verkeer - AWV315
 N3960001;10.6;-31;10.8;32;Agentschap Wegen en Verkeer - AWV313
-N3970001;0;-12;5.5;40;Agentschap Wegen en Verkeer - AWV311
+N3970001;0;-11;5.5;40;Agentschap Wegen en Verkeer - AWV311
 N3980001;0;-4;1.7;13;Agentschap Wegen en Verkeer - AWV313
 N3990001;0;-28;1.6;50;Agentschap Wegen en Verkeer - AWV316
 N3990001;1.6;50;2.6;-36;Gemeente - GemeenteTielt
@@ -985,9 +948,7 @@ N4150001;8.8;-6;11.4;17;Agentschap Wegen en Verkeer - AWV412
 N4150001;11.401;-15;20.7;29;Agentschap Wegen en Verkeer - AWV412
 N4160001;0;0;12.8;-17;Agentschap Wegen en Verkeer - AWV415
 N4160001;12.8;-17;16;6;Agentschap Wegen en Verkeer - AWV414
-N4170001;0;-11;3.2;50;Agentschap Wegen en Verkeer - AWV414
 N4170001;3.2;50;3.2;52;Agentschap Wegen en Verkeer - AWV415
-N4170001;3.2;52;3.9;-91;Agentschap Wegen en Verkeer - AWV414
 N4170001;3.9;-91;4;12;Gemeente - GemeenteWetteren
 N4170002;0;-11;3.9;-93;Agentschap Wegen en Verkeer - AWV414
 N4170002;3.9;-93;3.9;-91;Agentschap Wegen en Verkeer - AWV415
@@ -1008,7 +969,6 @@ N4360001;1;-36;8.1;29;Agentschap Wegen en Verkeer - AWV413
 N4360001;8.2;-44;15;59;Agentschap Wegen en Verkeer - AWV413
 N4370001;0;0;6.7;10;Agentschap Wegen en Verkeer - AWV413
 N4370001;7.7;-48;10.1;14;Agentschap Wegen en Verkeer - AWV413
-N4370001;10.1;14;18.9;18;Agentschap Wegen en Verkeer - AWV411
 N4370001;19;-83;25.6;41;Agentschap Wegen en Verkeer - AWV412
 N4370001;25.7;-59;29.8;46;Agentschap Wegen en Verkeer - AWV412
 N4370001;29.8;46;31.9;8;Agentschap Wegen en Verkeer - AWV312
@@ -1028,8 +988,6 @@ N4410001;3.1;-58;6.5;20;Agentschap Wegen en Verkeer - AWV412
 N4420001;0.1;-89;9;23;Agentschap Wegen en Verkeer - AWV415
 N4420001;9;23;9.1;52;Gemeente - GemeenteBerlare
 N4440001;0;-9;0.7;31;Agentschap Wegen en Verkeer - AWV411
-N4440001;0.7;31;1.6;-40;Gemeente - GemeenteGent
-N4440001;1.6;-40;3.6;31;Gemeente - GemeenteMerelbeke
 N4440001;3.6;31;15;14;Agentschap Wegen en Verkeer - AWV411
 N4440002;0.7;31;2.3;-43;Gemeente - GemeenteGent
 N4440002;2.3;-43;3.6;31;Gemeente - GemeenteMerelbeke
@@ -1046,12 +1004,10 @@ N4489011;0;-3;1.2;31;Agentschap Wegen en Verkeer - AWV413
 N4490001;0;-4;0.2;-33;Agentschap Wegen en Verkeer - AWV411
 N4490001;0.2;-33;18.2;16;Agentschap Wegen en Verkeer - AWV414
 N4500001;0;-6;2.7;495;Agentschap Wegen en Verkeer - AWV121
-N4500001;2.7;495;2.7;4669;Gemeente - GemeenteBeveren
 N4500002;2.7;496;2.7;5017;Gemeente - GemeenteBeveren
 N4510001;0.2;-203;4.8;94;Gemeente - GemeenteSint-Niklaas
 N4510001;4.8;94;4.8;10168;Gemeente - GemeenteBeveren
 N4520001;3.8;-3799;3.8;-119;Gemeente - GemeenteNazareth
-N4520001;3.8;-119;4.2;86;Agentschap Wegen en Verkeer - AWV411
 N4520001;4.2;86;4.6;82;Agentschap Wegen en Verkeer - AWV412
 N4520001;4.6;82;6.1;30;Gemeente - GemeenteGavere
 N4520002;3.8;-119;4.6;82;Agentschap Wegen en Verkeer - AWV411
@@ -1181,15 +1137,12 @@ N7129011;0;0;0;584;Gemeente - GemeentePelt
 N7129021;18.5;-6;19.4;34;Agentschap Wegen en Verkeer - AWV717
 N7130001;0;-11;1.3;37;Agentschap Wegen en Verkeer - AWV717
 N7150001;0.1;-102;3.7;126;Agentschap Wegen en Verkeer - AWV720
-N7150001;9.3;-40;17.8;66;Agentschap Wegen en Verkeer - AWV717
-N7150001;17.9;-31;37.8;92;Agentschap Wegen en Verkeer - AWV717
 N7150002;9.3;-41;37.8;96;Agentschap Wegen en Verkeer - AWV717
 N7159011;17.9;-65;18.2;110;Agentschap Wegen en Verkeer - AWV717
 N7160001;0.6;-52;8.3;0;Agentschap Wegen en Verkeer - AWV719
 N7160001;8.3;0;14.8;92;Agentschap Wegen en Verkeer - AWV717
 N7169011;0;0;0;461;Gemeente - GemeenteHerk-de-Stad
 N7170001;0;-32;8.8;44;Agentschap Wegen en Verkeer - AWV717
-N7170001;10.4;0;12.1;45;Agentschap Wegen en Verkeer - AWV717
 N7170001;12.1;46;12.1;48;Agentschap Wegen en Verkeer - AWV717
 N7179011;0;-5;0.3;46;Gemeente - GemeenteBeringen
 N7179021;0.2;0;0.2;1010;Gemeente - GemeenteLummen
@@ -1321,13 +1274,10 @@ R0000001;58.5;-83;71.4;20;Agentschap Wegen en Verkeer - AWV211
 R0000001;71.4;20;71.4;4201;Waals Gewest - Waals Gewest
 R0010001;0;-1;16.7;6;Agentschap Wegen en Verkeer - AWV121
 R0020001;78;-98;89.9;99;Agentschap Wegen en Verkeer - AWV121
-R0040001;0.1;-103;0;7;Agentschap Wegen en Verkeer - AWV411
 R0040002;0;-5;2;-15;Agentschap Wegen en Verkeer - AWV411
 R0040002;2;-15;61.4;34;Agentschap Wegen en Verkeer - AWV411
-R0060001;1.7;-71;9.3;59;Agentschap Wegen en Verkeer - AWV112
 R0060002;0.7;-79;9.3;67;Agentschap Wegen en Verkeer - AWV112
 R0080001;0.1;-99;4.3;71;Agentschap Wegen en Verkeer - AWV312
-R0080001;6.4;-627;8;82;Agentschap Wegen en Verkeer - AWV312
 R0080001;8.8;-108;9.3;62;Agentschap Wegen en Verkeer - AWV312
 R0080001;11.1;-91;16.5;75;Agentschap Wegen en Verkeer - AWV312
 R0080002;5.6;-70;8.1;0;Agentschap Wegen en Verkeer - AWV312
@@ -1381,10 +1331,8 @@ R0420001;0;-4;2.1;53;Agentschap Wegen en Verkeer - AWV414
 R0420001;2.1;53;3;-3;Gemeente - GemeenteSint-Niklaas
 R0420001;3;-3;5;0;Agentschap Wegen en Verkeer - AWV414
 R0430001;0;-6;21;0;Agentschap Wegen en Verkeer - AWV413
-R0700001;0;-1;1.9;78;Agentschap Wegen en Verkeer - AWV720
 R0700001;1.9;78;2.3;-51;Gemeente - GemeenteHasselt
 R0700001;2.3;-51;2.5;41;Agentschap Wegen en Verkeer - AWV720
-R0700002;0;-3;0.1;0;Agentschap Wegen en Verkeer - AWV720
 R0700002;0.2;0;0.4;35;Agentschap Wegen en Verkeer - AWV720
 R0700002;0.5;-13;0.7;0;Agentschap Wegen en Verkeer - AWV720
 R0700002;0.8;-71;1.4;0;Agentschap Wegen en Verkeer - AWV720
