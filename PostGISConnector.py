@@ -1,5 +1,4 @@
-import psycopg2
-from psycopg2 import Error
+import psycopg2 # pip install psycopg2-binary
 
 
 class PostGISConnector:

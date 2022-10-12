@@ -70,7 +70,7 @@ class JsonToWegsegmentProcessor:
 
     @staticmethod
     def sort_list(list_segmenten):
-        return list(sorted(list_segmenten, key=lambda x: (x.ident8, x.begin.opschrift, x.begin.afstand)))
+        return list(sorted(list_segmenten, key=lambda x: (x.ident8, x.begin.positie)))
 
     @staticmethod
     def clean_list(list_segmenten):
@@ -82,6 +82,8 @@ class JsonToWegsegmentProcessor:
 
         skip_next = False
         for i in range(len(list_segmenten) - 1):
+            if list_segmenten[i].id in ['58643', '56529']:
+                pass
             if skip_next:
                 skip_next = False
                 continue
@@ -89,10 +91,9 @@ class JsonToWegsegmentProcessor:
                 continue
             if list_segmenten[i].gebied != list_segmenten[i + 1].gebied:
                 continue
-            if list_segmenten[i].eind.opschrift != list_segmenten[i + 1].begin.opschrift:
-                continue
-            if list_segmenten[i].eind.afstand != list_segmenten[i + 1].begin.afstand:
-                continue
+            if list_segmenten[i].eind.positie != list_segmenten[i + 1].begin.positie:
+                if abs(list_segmenten[i].eind.positie - list_segmenten[i + 1].begin.positie) > 0.050:
+                    continue
             skip_next = True
             if list_segmenten[i] in new_list:
                 new_list.remove(list_segmenten[i])
