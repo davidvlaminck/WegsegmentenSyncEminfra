@@ -3,12 +3,45 @@ import time
 
 from termcolor import colored
 
+from EventDataSegment import EventDataSegment
 from FSConnector import FSConnector
 from JsonToWegsegmentProcessor import JsonToWegsegmentProcessor
 from PostGISConnector import PostGISConnector
 from PostGISToWegsegmentProcessor import PostGISToWegsegmentProcessor
 from RequesterFactory import RequesterFactory
 from SettingsManager import SettingsManager
+
+
+def add_exceptions(segmenten):
+    instances_to_remove = []
+    for instance in segmenten:
+        if instance.ident8 == 'N0100001':
+            if 'AWV121' in instance.gebied and instance.begin.opschrift == 0:
+                instances_to_remove.append(instance)
+            if 'AWV121' in instance.gebied and instance.begin.opschrift == 2.3:
+                instance.begin.positie = 3.4
+                instance.begin.opschrift = 3.4
+                instance.begin.afstand = 0
+                instance.lengte = instance.eind.positie - instance.begin.positie
+
+
+    for instance_to_remove in instances_to_remove:
+        segmenten.remove(instance_to_remove)
+
+    n10_brabo = EventDataSegment()
+    n10_brabo.ident8 = 'N0100001'
+    n10_brabo.gebied = 'BRABO I'
+    n10_brabo.eigenbeheer = False
+    n10_brabo.begin.positie = 0
+    n10_brabo.begin.opschrift = 0
+    n10_brabo.begin.afstand = 0
+    n10_brabo.eind.positie = 3.4
+    n10_brabo.eind.opschrift = 3.4
+    n10_brabo.eind.afstand = 0
+
+    segmenten.append(n10_brabo)
+
+    return segmenten
 
 if __name__ == '__main__':
     if platform.system() == 'Linux':
@@ -41,8 +74,12 @@ if __name__ == '__main__':
     print(
         colored(f'Time to process feature server lines to Python dataclass objects: {round(end - start, 2)}', 'yellow'))
 
-    for el in list(filter(lambda x: x.id in ['58745', '58771', '58639', '58681', '58646', '58675', '58833', '58765', '59593', '56392', '56682', '58721'] and x.lengte <= 5, list_segmenten)):
+    for el in list(filter(lambda x: x.id in ['58745', '58771', '58639', '58681', '58646', '58675', '58833', '58765', '59593', '56392', '56682', '58721', '57436', '56693', '56608', '56501'] and x.lengte <= 5, list_segmenten)):
         list_segmenten.remove(el)
+        # EventDataSegment(ident8='N0580001, begin=WegLocatieData(positie=27.385), eind=WegLocatieData(positie=27.387), gebied='Agentschap Wegen en Verkeer - AWV313', id='56501', lengte=2)
+        # EventDataSegment(ident8='N0390002, begin=WegLocatieData(positie=14.006), eind=WegLocatieData(positie=14.007), gebied='Agentschap Wegen en Verkeer - AWV315', id='56608', lengte=1)
+        # EventDataSegment(ident8='N0390001, begin=WegLocatieData(positie=14.014), eind=WegLocatieData(positie=14.015), gebied='Agentschap Wegen en Verkeer - AWV315', id='56693', lengte=1)
+        # EventDataSegment(ident8='N0360002, begin=WegLocatieData(positie=25.263), eind=WegLocatieData(positie=25.264), gebied='Agentschap Wegen en Verkeer - AWV316', id='57436', lengte=1)
         # EventDataSegment(ident8='N0080001, begin=WegLocatieData(positie=145.16), eind=WegLocatieData(positie=145.161), gebied='Agentschap Wegen en Verkeer - AWV315', id='58721', lengte=1)
         # EventDataSegment(ident8='N0089071, begin=WegLocatieData(positie=1.846), eind=WegLocatieData(positie=1.846), gebied='Agentschap Wegen en Verkeer - AWV315', id='56682', lengte=0)
         # EventDataSegment(ident8='N0360001, begin=WegLocatieData(positie=25.263), eind=WegLocatieData(positie=25.264), gebied='Agentschap Wegen en Verkeer - AWV316', id='56392', lengte=1)
@@ -69,7 +106,9 @@ if __name__ == '__main__':
     end = time.time()
     print(colored(f'Time to remove one side (double data): {round(end - start, 2)}', 'yellow'))
 
-    with open("segmenten2.csv", "w") as f:
+    list_segmenten = add_exceptions(list_segmenten)
+
+    with open("segmenten.csv", "w") as f:
         f.write('ident8;begin.opschrift;begin.afstand;eind.opschrift;eind.afstand;gebied\n')
         for segment in list_segmenten:
             f.write(
@@ -77,7 +116,8 @@ if __name__ == '__main__':
 
     print(colored(f'Number of event data objects: {len(list_segmenten)}', 'green'))
 
-    segmenten_WDB = list(filter(lambda x: x.gebied.startswith('Agentschap Wegen en Verkeer'), list_segmenten))
+    gebied_exceptions = ['BRABO I']
+    segmenten_WDB = list(filter(lambda x: x.gebied.startswith('Agentschap Wegen en Verkeer') or x.gebied in gebied_exceptions, list_segmenten))
 
     # get eminfra objects
     connector = PostGISConnector(host=db_settings['host'], port=db_settings['port'],

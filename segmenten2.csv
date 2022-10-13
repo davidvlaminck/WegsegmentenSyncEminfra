@@ -283,10 +283,9 @@ N0359051;0;0;0;293;Gemeente - GemeentePittem
 N0359071;0;-29;1.5;21;Agentschap Wegen en Verkeer - AWV316
 N0360001;0;-2;4;24;Agentschap Wegen en Verkeer - AWV313
 N0360001;4;24;21.9;-40;Agentschap Wegen en Verkeer - AWV316
+N0360001;21.9;-40;46.2;17;Agentschap Wegen en Verkeer - AWV312
 N0360001;46.3;-61;54.7;-43;Agentschap Wegen en Verkeer - AWV412
 N0360001;54.7;-43;55.3;110;Gemeente - GemeenteRonse
-N0360002;25.3;-34;25.3;-33;Agentschap Wegen en Verkeer - AWV316
-N0360002;25.3;-33;46.2;17;Agentschap Wegen en Verkeer - AWV312
 N0369011;0;0;0;1907;Gemeente - GemeenteRoeselare
 N0369021;0;0;0;1169;Gemeente - GemeenteIzegem
 N0369031;0;0;0;1349;Gemeente - GemeenteIzegem
@@ -306,9 +305,7 @@ N0379011;0.5;0;0.5;2608;Gemeente - GemeenteRuiselede
 N0379021;0;0;1.4;65;Agentschap Wegen en Verkeer - AWV313
 N0380001;0;-3;19.8;13;Agentschap Wegen en Verkeer - AWV313
 N0390001;0;-2;7.9;5;Agentschap Wegen en Verkeer - AWV315
-N0390001;7.9;5;14;13;Agentschap Wegen en Verkeer - AWV313
-N0390001;14;13;14;14;Agentschap Wegen en Verkeer - AWV315
-N0390001;14;14;17.1;55;Agentschap Wegen en Verkeer - AWV313
+N0390001;7.9;5;17.1;55;Agentschap Wegen en Verkeer - AWV313
 N0399011;0;0;0;1813;Gemeente - GemeenteKoksijde
 N0410001;0.1;-105;3.3;75;Agentschap Wegen en Verkeer - AWV415
 N0410001;10.9;-40;18;-1;Agentschap Wegen en Verkeer - AWV415
@@ -361,7 +358,6 @@ N0509081;0.1;-61;0.2;80;Agentschap Wegen en Verkeer - AWV312
 N0570001;0;0;3.3;68;Agentschap Wegen en Verkeer - AWV412
 N0580001;8.1;-4;10.6;85;Agentschap Wegen en Verkeer - AWV312
 N0580001;20;0;27.3;85;Agentschap Wegen en Verkeer - AWV312
-N0580001;27.3;85;27.3;87;Agentschap Wegen en Verkeer - AWV313
 N0580002;8.1;-7691;8.1;-4;Waals Gewest - Waals Gewest
 N0600001;0;-4;14.5;21;Agentschap Wegen en Verkeer - AWV411
 N0600001;14.5;21;32.9;61;Agentschap Wegen en Verkeer - AWV412
