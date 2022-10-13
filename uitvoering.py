@@ -10,6 +10,7 @@ from PostGISConnector import PostGISConnector
 from PostGISToWegsegmentProcessor import PostGISToWegsegmentProcessor
 from RequesterFactory import RequesterFactory
 from SettingsManager import SettingsManager
+from WegLocatieData import WegLocatieData
 
 
 def add_exceptions(segmenten):
@@ -18,17 +19,32 @@ def add_exceptions(segmenten):
         if instance.ident8 == 'N0100001':
             if 'AWV121' in instance.gebied and instance.begin.opschrift == 0:
                 instances_to_remove.append(instance)
-            if 'AWV121' in instance.gebied and instance.begin.opschrift == 2.3:
+            if 'AWV123' in instance.gebied and instance.begin.opschrift == 2.3:
                 instance.begin.positie = 3.4
                 instance.begin.opschrift = 3.4
                 instance.begin.afstand = 0
                 instance.lengte = instance.eind.positie - instance.begin.positie
+        if instance.ident8 == 'N0120001':
+            if 'AWV121' in instance.gebied and instance.begin.opschrift == 1:
+                instance.eind.positie = 4.3
+                instance.eind.opschrift = 4.3
+                instance.eind.afstand = 0
+                instance.lengte = instance.eind.positie - instance.begin.positie
+        if instance.ident8 == 'N1120001':
+            if 'AWV123' in instance.gebied and instance.begin.opschrift == 0:
+                instance.begin.positie = 1.2
+                instance.begin.opschrift = 1.2
+                instance.begin.afstand = 0
+                instance.lengte = instance.eind.positie - instance.begin.positie
 
+# N1120001;0;-10;3.9;53;Agentschap Wegen en Verkeer - AWV123
 
     for instance_to_remove in instances_to_remove:
         segmenten.remove(instance_to_remove)
 
     n10_brabo = EventDataSegment()
+    n10_brabo.begin = WegLocatieData()
+    n10_brabo.eind = WegLocatieData()
     n10_brabo.ident8 = 'N0100001'
     n10_brabo.gebied = 'BRABO I'
     n10_brabo.eigenbeheer = False
@@ -38,8 +54,35 @@ def add_exceptions(segmenten):
     n10_brabo.eind.positie = 3.4
     n10_brabo.eind.opschrift = 3.4
     n10_brabo.eind.afstand = 0
-
     segmenten.append(n10_brabo)
+
+    n12_brabo = EventDataSegment()
+    n12_brabo.begin = WegLocatieData()
+    n12_brabo.eind = WegLocatieData()
+    n12_brabo.ident8 = 'N0120001'
+    n12_brabo.gebied = 'BRABO I'
+    n12_brabo.eigenbeheer = False
+    n12_brabo.begin.positie = 4.3
+    n12_brabo.begin.opschrift = 4.3
+    n12_brabo.begin.afstand = 0
+    n12_brabo.eind.positie = 6.1
+    n12_brabo.eind.opschrift = 6.1
+    n12_brabo.eind.afstand = 0
+    segmenten.append(n12_brabo)
+
+    n112_brabo = EventDataSegment()
+    n112_brabo.begin = WegLocatieData()
+    n112_brabo.eind = WegLocatieData()
+    n112_brabo.ident8 = 'N1120001'
+    n112_brabo.gebied = 'BRABO I'
+    n112_brabo.eigenbeheer = False
+    n112_brabo.begin.positie = 0
+    n112_brabo.begin.opschrift = 0
+    n112_brabo.begin.afstand = 0
+    n112_brabo.eind.positie = 1.2
+    n112_brabo.eind.opschrift = 1.2
+    n112_brabo.eind.afstand = 0
+    segmenten.append(n112_brabo)
 
     return segmenten
 

@@ -149,7 +149,7 @@ N0099091;0;0;0;522;Gemeente - GemeenteAsse
 N0099101;0;0;0;693;Gemeente - GemeenteDilbeek
 N0099111;0;-4;1;20;Agentschap Wegen en Verkeer - AWV212
 N0099131;0;-2;0.49;1;Agentschap Wegen en Verkeer - AWV413
-N0100001;2.3;-54;8;106;Agentschap Wegen en Verkeer - AWV123
+N0100001;3.4;0;8;106;Agentschap Wegen en Verkeer - AWV123
 N0100001;8;106;8;1162;Gemeente - GemeenteLier
 N0100001;11.7;-139;11.7;-117;Agentschap Wegen en Verkeer - AWV112
 N0100001;11.7;-117;17.2;41;Agentschap Wegen en Verkeer - AWV123
@@ -158,7 +158,7 @@ N0100001;28.9;-25;49;78;Agentschap Wegen en Verkeer - AWV214
 N0109011;0;0;0;323;Gemeente - GemeenteAarschot
 N0110001;0;-9;10.9;94;Agentschap Wegen en Verkeer - AWV123
 N0120001;1;-992;1;-87;Gemeente - GemeenteAntwerpen
-N0120001;1;-87;6;-4;Agentschap Wegen en Verkeer - AWV121
+N0120001;1;-87;4.3;0;Agentschap Wegen en Verkeer - AWV121
 N0120001;6;-4;29;-39;Agentschap Wegen en Verkeer - AWV123
 N0120001;29;-39;56.5;90;Agentschap Wegen en Verkeer - AWV125
 N0130001;0.4;-25;2;49;Agentschap Wegen en Verkeer - AWV123
@@ -455,7 +455,7 @@ N1100001;10.1;13;11.6;98;Agentschap Wegen en Verkeer - AWV717
 N1109011;0;-13;0.7;76;Agentschap Wegen en Verkeer - AWV114
 N1110001;0;-6;4.4;91;Agentschap Wegen en Verkeer - AWV121
 N1110001;4.4;91;18.8;199;Agentschap Wegen en Verkeer - AWV123
-N1120001;0;-10;3.9;53;Agentschap Wegen en Verkeer - AWV123
+N1120001;1.2;0;3.9;53;Agentschap Wegen en Verkeer - AWV123
 N1130001;0;0;0;1520;Gemeente - GemeenteAntwerpen
 N1140001;0;-8;1.7;53;Agentschap Wegen en Verkeer - AWV121
 N1140001;1.7;53;2.6;-81;Gemeente - GemeenteAntwerpen
@@ -1292,3 +1292,5 @@ T7230001;8.9;0;8.9;624;Agentschap Wegen en Verkeer - AWV718
 T7320001;0;0;0;900;Gemeente - GemeenteHasselt
 T7749021;0;0;0;801;Agentschap Wegen en Verkeer - AWV720
 N0100001;0;0;3.4;0;BRABO I
+N0120001;4.3;0;6.1;0;BRABO I
+N1120001;0;0;1.2;0;BRABO I
