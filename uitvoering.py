@@ -117,8 +117,11 @@ if __name__ == '__main__':
     print(
         colored(f'Time to process feature server lines to Python dataclass objects: {round(end - start, 2)}', 'yellow'))
 
-    for el in list(filter(lambda x: x.id in ['58745', '58771', '58639', '58681', '58646', '58675', '58833', '58765', '59593', '56392', '56682', '58721', '57436', '56693', '56608', '56501'] and x.lengte <= 5, list_segmenten)):
+    for el in list(filter(lambda x: x.id in ['58745', '58771', '58639', '58681', '58646', '58675', '58833', '58765',
+                                             '59593', '56392', '56682', '58721', '57436', '56693', '56608', '56501',
+                                             '56674'] and x.lengte <= 5, list_segmenten)):
         list_segmenten.remove(el)
+        # EventDataSegment(ident8='N0089072, begin=WegLocatieData(positie=1.846), eind=WegLocatieData(positie=1.847), gebied='Agentschap Wegen en Verkeer - AWV315', id='56674', lengte=1)
         # EventDataSegment(ident8='N0580001, begin=WegLocatieData(positie=27.385), eind=WegLocatieData(positie=27.387), gebied='Agentschap Wegen en Verkeer - AWV313', id='56501', lengte=2)
         # EventDataSegment(ident8='N0390002, begin=WegLocatieData(positie=14.006), eind=WegLocatieData(positie=14.007), gebied='Agentschap Wegen en Verkeer - AWV315', id='56608', lengte=1)
         # EventDataSegment(ident8='N0390001, begin=WegLocatieData(positie=14.014), eind=WegLocatieData(positie=14.015), gebied='Agentschap Wegen en Verkeer - AWV315', id='56693', lengte=1)
@@ -174,7 +177,7 @@ if __name__ == '__main__':
     LEFT JOIN assettypes ON assets.assettype = assettypes.uuid
     LEFT JOIN locatie ON assets.uuid = locatie.assetuuid 
     LEFT JOIN beheerders ON schadebeheerder = beheerders.uuid
-    WHERE assettypes.uri IN ('https://lgc.data.wegenenverkeer.be/ns/installatie#TWeg','https://lgc.data.wegenenverkeer.be/ns/installatie#AWeg','https://lgc.data.wegenenverkeer.be/ns/installatie#NWeg','https://lgc.data.wegenenverkeer.be/ns/installatie#BWeg','https://lgc.data.wegenenverkeer.be/ns/installatie#RWeg')
+    WHERE assets.actief = TRUE AND assettypes.uri IN ('https://lgc.data.wegenenverkeer.be/ns/installatie#TWeg','https://lgc.data.wegenenverkeer.be/ns/installatie#AWeg','https://lgc.data.wegenenverkeer.be/ns/installatie#NWeg','https://lgc.data.wegenenverkeer.be/ns/installatie#BWeg','https://lgc.data.wegenenverkeer.be/ns/installatie#RWeg')
     """
     cursor.execute(query)
     for record in cursor.fetchall():
@@ -182,6 +185,9 @@ if __name__ == '__main__':
     cursor.close()
 
     print(colored(f'Number of data objects from EM-Infra: {len(eminfra_data)}', 'green'))
+
+    matched_segments_WDB = []
+    matched_eminfra_data = []
 
     for segment_WDB in segmenten_WDB:
         if segment_WDB.id == '58655':
@@ -207,5 +213,33 @@ if __name__ == '__main__':
             continue
         else:
             print(colored(f'found reasonable match with a score of {sorted_candidates[0].match_score}', 'green'))
+            #print(segment_WDB.wktLineStringZ)
+            best_match = sorted_candidates[0]
+            matched_eminfra_data.append(best_match)
+            matched_segments_WDB.append(segment_WDB)
 
-        pass
+            if best_match.toestand != 'in-gebruik':
+                print(colored(f'bad toestand for: {best_match.naampad} link: https://apps.mow.vlaanderen.be/eminfra/installaties/{best_match.uuid}', 'red'))
+
+            # check geometry
+            # check toezichtgroep
+            # check bestek
+            # check schadebeheerder
+            # check ident8
+
+    for matched_segment in matched_segments_WDB:
+        segmenten_WDB.remove(matched_segment)
+
+    for matched_eminfra in matched_eminfra_data:
+        if matched_eminfra not in eminfra_data:
+            print(f'using segment twice: {matched_eminfra}')
+        else:
+            eminfra_data.remove(matched_eminfra)
+
+
+    print(f'count eminfra data: {len(eminfra_data)}')
+    print(f'count WDB data: {len(segmenten_WDB)}')
+
+
+    pass
+

@@ -1,5 +1,7 @@
 import json
 
+import shapely
+from shapely import wkt, ops
 from EventDataSegment import EventDataSegment
 from WegLocatieData import WegLocatieData
 
@@ -18,6 +20,8 @@ class JsonToWegsegmentProcessor:
         event_data_segment = EventDataSegment()
         event_data_segment.ident8 = dict_list["properties"]["ident8"]
         event_data_segment.wktLineStringZM = self.fs_input_to_wkt_line_string_zm(dict_list["geometry"]["coordinates"])
+        shape = shapely.wkt.loads(event_data_segment.wktLineStringZM)
+        event_data_segment.wktLineStringZ = shape.wkt
         event_data_segment.begin = WegLocatieData()
         event_data_segment.begin.positie = dict_list["properties"]["locatie"]["begin"]["positie"]
         event_data_segment.begin.bron = dict_list["properties"]["locatie"]["begin"]["bron"]
