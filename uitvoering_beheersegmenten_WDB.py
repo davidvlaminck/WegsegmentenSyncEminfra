@@ -41,8 +41,13 @@ if __name__ == '__main__':
 
     start = time.time()
     list_segmenten = processor.remove_non_main_roads(list_segmenten)
+    print(f'number of segments: {len(list_segmenten)}')
     for i in range(4):
+        iter_start = time.time()
         list_segmenten = processor.clean_list(list_segmenten)
+        iter_end = time.time()
+        print(colored(f'Time for iteration {i}: {round(end - start, 2)}', 'yellow'))
+        print(f'number of segments: {len(list_segmenten)}')
     list_segmenten = processor.sort_list(list_segmenten)
     end = time.time()
     print(colored(f'Time to combine Python dataclass objects: {round(end - start, 2)}', 'yellow'))
