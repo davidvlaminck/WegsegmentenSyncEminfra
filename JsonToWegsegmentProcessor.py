@@ -86,8 +86,6 @@ class JsonToWegsegmentProcessor:
 
         skip_next = False
         for i in range(len(list_segmenten) - 1):
-            if list_segmenten[i].id in ['58643', '56529']:
-                pass
             if skip_next:
                 skip_next = False
                 continue
@@ -103,6 +101,7 @@ class JsonToWegsegmentProcessor:
                 new_list.remove(list_segmenten[i])
             if list_segmenten[i + 1] in new_list:
                 new_list.remove(list_segmenten[i + 1])
+
             combined = list_segmenten[i]
             combined.eind = list_segmenten[i + 1].eind
             combined.lengte += list_segmenten[i + 1].lengte
