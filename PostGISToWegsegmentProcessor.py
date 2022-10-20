@@ -1,3 +1,5 @@
+from termcolor import colored
+
 from BeheerSegment import BeheerSegment
 from WegLocatieData import WegLocatieData
 
@@ -15,6 +17,10 @@ class PostGISToWegsegmentProcessor:
         event_data_segment.beheerder_voluit = tup[13]
         event_data_segment.omschrijving = tup[16]
         event_data_segment.ident8 = tup[22]
+        event_data_segment.toezichter = tup[34]
+        event_data_segment.bestek = tup[35]
+        event_data_segment.geometrie = tup[36]
+
         event_data_segment.begin = WegLocatieData()
         event_data_segment.eind = WegLocatieData()
 
@@ -28,12 +34,11 @@ class PostGISToWegsegmentProcessor:
             return
         if 'TUNNEL/' in data_segment.naampad.upper() or 'A11.PPS/' in data_segment.naampad.upper():
             return
-        if data_segment.omschrijving == 'N1 - district 123 Brecht - kmpt 48.882 tot kmpt 70.11 - N0010001':
-            pass
+
         parts = data_segment.omschrijving.split(' - ')
         try:
             if data_segment.actief and len(parts) < 4:
-                print(data_segment.omschrijving)
+                print(colored('Not a valid omschrijving: ' + data_segment.omschrijving, 'red'))
             else:
                 van_tot = parts[2].split(' tot ')
                 van_str = van_tot[0].replace('kmpt ', '')
@@ -42,4 +47,4 @@ class PostGISToWegsegmentProcessor:
                 data_segment.eind.positie = float(tot_str)
                 data_segment.ident8 = parts[3]
         except:
-            print(data_segment.omschrijving)
+            print(colored('Not a valid omschrijving: ' + data_segment.omschrijving, 'red'))
