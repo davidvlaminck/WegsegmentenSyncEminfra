@@ -1,7 +1,10 @@
 import json
 
 import shapely
-from shapely import wkt, ops
+from shapely import wkt, ops, geometry
+from shapely.geometry import MultiLineString, LineString
+from termcolor import colored
+
 from EventDataSegment import EventDataSegment
 from WegLocatieData import WegLocatieData
 
@@ -21,7 +24,10 @@ class JsonToWegsegmentProcessor:
         event_data_segment.ident8 = dict_list["properties"]["ident8"]
         event_data_segment.wktLineStringZM = self.fs_input_to_wkt_line_string_zm(dict_list["geometry"]["coordinates"])
         shape = shapely.wkt.loads(event_data_segment.wktLineStringZM)
-        event_data_segment.wktLineStringZ = shape.wkt
+        new_wkt = shapely.wkt.dumps(shape, rounding_precision=3)
+        event_data_segment.wktLineStringZ = new_wkt
+        event_data_segment.shape = shapely.wkt.loads(new_wkt)
+
         event_data_segment.begin = WegLocatieData()
         event_data_segment.begin.positie = dict_list["properties"]["locatie"]["begin"]["positie"]
         event_data_segment.begin.bron = dict_list["properties"]["locatie"]["begin"]["bron"]
@@ -107,6 +113,36 @@ class JsonToWegsegmentProcessor:
             combined.lengte += list_segmenten[i + 1].lengte
             combined.creatiedatum = max(combined.creatiedatum, list_segmenten[i + 1].creatiedatum)
             combined.wijzigingsdatum = max(combined.wijzigingsdatum, list_segmenten[i + 1].wijzigingsdatum)
+
+            try:
+                lines_list = []
+                if isinstance(list_segmenten[i].shape, MultiLineString):
+                    lines_list.extend(list_segmenten[i].shape)
+                else:
+                    lines_list.append(list_segmenten[i].shape)
+                if isinstance(list_segmenten[i + 1].shape, MultiLineString):
+                    lines_list.extend(list_segmenten[i + 1].shape)
+                else:
+                    lines_list.append(list_segmenten[i + 1].shape)
+
+                for line in lines_list:
+                    if not isinstance(line, LineString):
+                        pass
+
+                multi_line = geometry.MultiLineString(lines_list)
+
+                if list_segmenten[i].shape.intersects(list_segmenten[i + 1].shape):
+                    merged_line = ops.linemerge(multi_line)
+                    combined.shape = merged_line
+                    # print(colored('combined to a merged line', 'green'))
+                else:
+                    combined.shape = multi_line
+                    # print(colored('combined to multiline', 'green'))
+
+                combined.wktLineStringZ = shapely.wkt.dumps(combined.shape, rounding_precision=3)
+            except:
+                print(colored(f'could not combine geometries', 'red'))
+
             new_list.append(combined)
 
         return new_list

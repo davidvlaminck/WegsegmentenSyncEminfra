@@ -1,6 +1,8 @@
 import platform
 import time
 
+import pandas
+from shapely.geometry import MultiLineString
 from termcolor import colored
 
 from EventDataSegment import EventDataSegment
@@ -11,6 +13,37 @@ from PostGISToWegsegmentProcessor import PostGISToWegsegmentProcessor
 from RequesterFactory import RequesterFactory
 from SettingsManager import SettingsManager
 from WegLocatieData import WegLocatieData
+
+
+def district_ref_to_name_mapping(ref):
+    mapping = {
+        '312A': '312 Autosnelwegen Zuid',
+        '311A': '311 Autosnelwegen Noord',
+        '719': 'Zuid-Limburg',
+        '717': 'West-Limburg',
+        '125': 'Vosselaar',
+        '212': 'Vilvoorde',
+        '414': 'Sint-Niklaas',
+        '112': 'Puurs',
+        '316': 'Pittem',
+        '412': 'Oudenaarde',
+        '315': 'Oostende',
+        '718': 'Oost-Limburg',
+        '312': 'Kortrijk',
+        '313': 'Ieper',
+        '411': 'Gent',
+        '114': 'Geel',
+        '413': 'Eeklo',
+        '720': 'Centraal-Limburg',
+        '311': 'Brugge',
+        '123': 'Brecht',
+        '121': 'Antwerpen',
+        '415': 'Aalst',
+        '213': 'Leuven',
+        '211': 'Halle',
+        '214': 'Aarschot'
+    }
+    return mapping[ref]
 
 
 def add_exceptions(segmenten):
@@ -37,7 +70,7 @@ def add_exceptions(segmenten):
                 instance.begin.afstand = 0
                 instance.lengte = instance.eind.positie - instance.begin.positie
 
-# N1120001;0;-10;3.9;53;Agentschap Wegen en Verkeer - AWV123
+    # N1120001;0;-10;3.9;53;Agentschap Wegen en Verkeer - AWV123
 
     for instance_to_remove in instances_to_remove:
         segmenten.remove(instance_to_remove)
@@ -85,6 +118,32 @@ def add_exceptions(segmenten):
     segmenten.append(n112_brabo)
 
     return segmenten
+
+
+def map_toestand(toestand):
+    return toestand.upper().replace('-', '_')
+
+
+def map_schadebeheerder(omschrijving):
+    return omschrijving.split(' - ')[1].replace('district ', '')[0:3]
+
+
+def map_toezichtgroep(omschrijving):
+    schadebeheerder = map_schadebeheerder(omschrijving)
+    mapping = {
+        '1': 'WA_DISTRICT',
+        '2': 'WVB_DISTRICT',
+        '3': 'WWV_DISTRICT',
+        '4': 'WOV_DISTRICT',
+        '7': 'WLB_DISTRICT'
+    }
+    try:
+        return mapping[schadebeheerder[0:1]]
+    except KeyError:
+        schadebeheerder = omschrijving.split(' - ')[1].replace('district ', '')
+        print(colored(f'no mapping for {omschrijving}', 'red'))
+        return ''
+
 
 if __name__ == '__main__':
     if platform.system() == 'Linux':
@@ -141,8 +200,13 @@ if __name__ == '__main__':
 
     start = time.time()
     list_segmenten = processor.remove_non_main_roads(list_segmenten)
+    print(f'number of segments: {len(list_segmenten)}')
     for i in range(5):
+        iter_start = time.time()
         list_segmenten = processor.clean_list(list_segmenten)
+        iter_end = time.time()
+        print(colored(f'Time for iteration {i}: {round(iter_end - iter_start, 2)}', 'yellow'))
+        print(f'number of segments: {len(list_segmenten)}')
     list_segmenten = processor.sort_list(list_segmenten)
     end = time.time()
     print(colored(f'Time to combine Python dataclass objects: {round(end - start, 2)}', 'yellow'))
@@ -163,7 +227,9 @@ if __name__ == '__main__':
     print(colored(f'Number of event data objects: {len(list_segmenten)}', 'green'))
 
     gebied_exceptions = ['BRABO I']
-    segmenten_WDB = list(filter(lambda x: x.gebied.startswith('Agentschap Wegen en Verkeer') or x.gebied in gebied_exceptions, list_segmenten))
+    segmenten_WDB = list(
+        filter(lambda x: x.gebied.startswith('Agentschap Wegen en Verkeer') or x.gebied in gebied_exceptions,
+               list_segmenten))
 
     # get eminfra objects
     connector = PostGISConnector(host=db_settings['host'], port=db_settings['port'],
@@ -173,10 +239,19 @@ if __name__ == '__main__':
     eminfra_data = []
 
     query = """
-    SELECT assets.*, assettypes."label", beheerders.referentie, beheerders.naam, locatie.* FROM assets 
-    LEFT JOIN assettypes ON assets.assettype = assettypes.uuid
-    LEFT JOIN locatie ON assets.uuid = locatie.assetuuid 
-    LEFT JOIN beheerders ON schadebeheerder = beheerders.uuid
+    WITH koppelingen AS (
+        SELECT * 
+        FROM bestekkoppelingen 
+            LEFT JOIN bestekken ON bestekken.uuid = bestekkoppelingen.bestekuuid 
+        WHERE bestekkoppelingen.koppelingstatus = 'ACTIEF' AND bestekken.edeltabesteknummer LIKE '%MOW/AWV/2017/10%')
+    SELECT assets.*, assettypes."label", beheerders.referentie, beheerders.naam, locatie.*, identiteiten.gebruikersnaam, koppelingen.aannemernaam, geometrie.wkt_string
+        FROM assets 
+            LEFT JOIN assettypes ON assets.assettype = assettypes.uuid
+            LEFT JOIN locatie ON assets.uuid = locatie.assetuuid 
+            LEFT JOIN geometrie ON assets.uuid = geometrie.assetuuid
+            LEFT JOIN beheerders ON schadebeheerder = beheerders.uuid
+            LEFT JOIN identiteiten on identiteiten.uuid = assets.toezichter
+            LEFT JOIN koppelingen ON koppelingen.assetuuid = assets.uuid
     WHERE assets.actief = TRUE AND assettypes.uri IN ('https://lgc.data.wegenenverkeer.be/ns/installatie#TWeg','https://lgc.data.wegenenverkeer.be/ns/installatie#AWeg','https://lgc.data.wegenenverkeer.be/ns/installatie#NWeg','https://lgc.data.wegenenverkeer.be/ns/installatie#BWeg','https://lgc.data.wegenenverkeer.be/ns/installatie#RWeg')
     """
     cursor.execute(query)
@@ -189,19 +264,34 @@ if __name__ == '__main__':
     matched_segments_WDB = []
     matched_eminfra_data = []
 
+    df = pandas.DataFrame()
+
+    lines_csv = []
+
     for segment_WDB in segmenten_WDB:
         if segment_WDB.id == '58655':
-            continue # verified exception
+            continue  # verified exception
 
         sorted_candidates = []
-        candidates = list(filter(lambda x: x.actief and x.ident8 is not None and x.ident8.startswith(segment_WDB.ident8[0:7]), eminfra_data))
+        candidates = list(
+            filter(lambda x: x.actief and x.ident8 is not None and x.ident8.startswith(segment_WDB.ident8[0:7]),
+                   eminfra_data))
         if len(candidates) == 0:
             print(colored('no valid candidates found for: ', 'red'))
             print(segment_WDB)
             continue
 
+        beheerder = segment_WDB.gebied.replace('Agentschap Wegen en Verkeer - AWV', '')
         for c in candidates:
-            c.match_score = abs(c.begin.positie - segment_WDB.begin.positie) + abs(c.eind.positie - segment_WDB.eind.positie)
+            c.match_score = abs(c.begin.positie - segment_WDB.begin.positie) + abs(
+                c.eind.positie - segment_WDB.eind.positie)
+
+            if c.omschrijving is None or ' - ' not in c.omschrijving:
+                c.match_score += 2.0
+            else:
+                district_in_omschrijving = c.omschrijving.split(' - ')[1][9:12]
+                if beheerder != district_in_omschrijving:
+                    c.match_score += 1.0
 
         sorted_candidates = list(sorted(candidates, key=lambda x: x.match_score))
 
@@ -213,19 +303,82 @@ if __name__ == '__main__':
             continue
         else:
             print(colored(f'found reasonable match with a score of {sorted_candidates[0].match_score}', 'green'))
-            #print(segment_WDB.wktLineStringZ)
+            # print(segment_WDB.wktLineStringZ)
             best_match = sorted_candidates[0]
             matched_eminfra_data.append(best_match)
             matched_segments_WDB.append(segment_WDB)
 
             if best_match.toestand != 'in-gebruik':
-                print(colored(f'bad toestand for: {best_match.naampad} link: https://apps.mow.vlaanderen.be/eminfra/installaties/{best_match.uuid}', 'red'))
+                print(colored(
+                    f'bad toestand for: {best_match.naampad} link: https://apps.mow.vlaanderen.be/eminfra/installaties/{best_match.uuid}',
+                    'red'))
 
-            # check geometry
-            # check toezichtgroep
-            # check bestek
-            # check schadebeheerder
-            # check ident8
+            if segment_WDB.ident8[0:7] != best_match.ident8[0:7]:
+                print(colored(f'{best_match.naampad}: ident8 not correct: {segment_WDB.ident8} vs {best_match.ident8}',
+                              'red'))
+
+            beheerder = segment_WDB.gebied.replace('Agentschap Wegen en Verkeer - AWV', '')
+            district_in_omschrijving = best_match.omschrijving.split(' - ')[1][9:12]
+            schadebeheerder = best_match.beheerder_referentie
+            beheerobject = best_match.naampad.split('/')[0]
+            naampad_beheerder = beheerobject.split('.')[1][0:3]
+
+            if best_match.bestek is None:
+                print(colored(f'{best_match.naampad}: bestek not found, should be {beheerder} '
+                              f'link: https://apps.mow.vlaanderen.be/eminfra/installaties/{best_match.uuid}', 'red'))
+            elif district_ref_to_name_mapping(beheerder) not in best_match.bestek:
+                print(colored(f'{best_match.naampad}: bestek not correct: {beheerder} vs {best_match.bestek} '
+                              f'link: https://apps.mow.vlaanderen.be/eminfra/installaties/{best_match.uuid}', 'red'))
+
+            correction_needed = False
+
+            if beheerder != district_in_omschrijving:
+                print(colored(
+                    f'{best_match.naampad}: beheerder != omschrijving: {beheerder} vs {best_match.omschrijving}',
+                    'red'))
+                correction_needed = True
+
+            if beheerder != schadebeheerder:
+                print(colored(f'{best_match.naampad}: beheerder != schadebeheerder: {beheerder} vs {schadebeheerder}',
+                              'red'))
+                correction_needed = True
+
+            if beheerder != naampad_beheerder:
+                print(colored(f'{best_match.naampad}: beheerder not in naampad: {beheerder} vs {naampad_beheerder}',
+                              'red'))
+                correction_needed = True
+
+            if correction_needed:
+                df1 = pandas.DataFrame({'id': [best_match.uuid], 'naampad': [best_match.naampad],
+                                        'type': ['lgc:installatie#NWeg'], 'actief': [best_match.actief],
+                                        'toestand': [map_toestand(best_match.toestand)],
+                                        'schadebeheerder|referentie': [map_schadebeheerder(best_match.omschrijving)],
+                                        'toezicht|toezichtgroep': [map_toezichtgroep(best_match.omschrijving)],
+                                        'toezicht|toezichter': [best_match.toezichter]})
+
+                df = pandas.concat([df, df1])
+
+            simplified = segment_WDB.shape.simplify(1)
+            lines_csv.append(f'{segment_WDB.id};{best_match.naampad};orig;{simplified}')
+            lines_csv.append(f'{segment_WDB.id};{best_match.naampad};simplified;{simplified}')
+
+            if segment_WDB.wktLineStringZ != best_match.geometrie:
+                response = requester.put(
+                    url=f'eminfra/core/api/installaties/{best_match.uuid}/installaties/ops/update-locatie-ident8',
+                    json={
+                        "uuids": [best_match.uuid],
+                        "async": False,
+                        "ident8": segment_WDB.ident8
+                    })
+                print(response.status_code)
+
+                response = requester.put(url=f'eminfra/core/api/installaties/{best_match.uuid}'
+                                             '/kenmerken/80052ed4-2f91-400c-8cba-57624653db11/geometrie',
+                                         json={"geometrie": str(simplified)})
+                print(response.status_code)
+
+
+            pass
 
     for matched_segment in matched_segments_WDB:
         segmenten_WDB.remove(matched_segment)
@@ -236,10 +389,14 @@ if __name__ == '__main__':
         else:
             eminfra_data.remove(matched_eminfra)
 
-
     print(f'count eminfra data: {len(eminfra_data)}')
     print(f'count WDB data: {len(segmenten_WDB)}')
 
-
+    if len(df) > 0:
+        df.to_excel('beheersegmenten_correcties.xlsx')
     pass
 
+    with open("wktstrings.csv", "w") as f:
+        f.write('id;naampad;wkt\n')
+        for line in lines_csv:
+            f.write(line + '\n')
