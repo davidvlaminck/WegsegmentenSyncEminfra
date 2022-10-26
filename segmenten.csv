@@ -27,7 +27,7 @@ A0100001;72.1;38;104.5;29;Agentschap Wegen en Verkeer - AWV311
 A0110001;72.7;-38;107.2;0;Agentschap Wegen en Verkeer - AWV411
 A0110001;107.2;0;134.4;-1;Agentschap Wegen en Verkeer - AWV413
 A0110001;134.4;-1;154.5;105;Agentschap Wegen en Verkeer - AWV311
-A0110002;64.1;-332;72.7;-38;Agentschap Wegen en Verkeer - AWV121
+A0110002;68.0;0;72.7;-38;Agentschap Wegen en Verkeer - AWV121
 A0120001;1.3;-1297;1.3;-42;Brussels Gewest - Brussels Gewest
 A0120001;1.3;-42;15.8;-32;Agentschap Wegen en Verkeer - AWV212
 A0120001;15.8;-32;23;-84;Agentschap Wegen en Verkeer - AWV112
@@ -40,7 +40,7 @@ A0130001;48.3;-44;100.2;1;Agentschap Wegen en Verkeer - AWV720
 A0130001;100.2;1;100.2;699;Waals Gewest - Waals Gewest
 A0140001;0;0;26.3;50;Agentschap Wegen en Verkeer - AWV312
 A0140001;26.3;50;97.4;2;Agentschap Wegen en Verkeer - AWV411
-A0140001;97.4;2;99.9;842;Agentschap Wegen en Verkeer - AWV121
+A0140001;97.4;2;99.9;842;LANTIS
 A0170001;17.6;-93;49;0;Agentschap Wegen en Verkeer - AWV312
 A0170001;49;0;68;74;Agentschap Wegen en Verkeer - AWV311
 A0170002;17.6;-2278;17.6;-98;Waals Gewest - Waals Gewest
@@ -370,7 +370,7 @@ N0700001;0;-21;5.6;-15;Agentschap Wegen en Verkeer - AWV411
 N0700001;5.6;-15;30.3;13;Agentschap Wegen en Verkeer - AWV414
 N0700001;30.3;13;32.5;-23;Gemeente - GemeenteSint-Niklaas
 N0700001;32.5;-23;37.9;-21;Agentschap Wegen en Verkeer - AWV414
-N0700001;37.9;-21;49.8;1;Agentschap Wegen en Verkeer - AWV121
+N0700001;37.9;-21;48.5;0;Agentschap Wegen en Verkeer - AWV121
 N0709011;0;-2;2.3;101;Agentschap Wegen en Verkeer - AWV411
 N0710001;3.2;-2495;3.2;-2389;Agentschap Wegen en Verkeer - AWV114
 N0710001;3.2;-2389;3.2;-60;Gemeente - GemeenteGeel
@@ -1191,7 +1191,7 @@ R0000001;14.2;1;52.8;94;Agentschap Wegen en Verkeer - AWV212
 R0000001;52.8;94;58.5;-82;Brussels Gewest - Brussels Gewest
 R0000001;58.5;-82;71.4;20;Agentschap Wegen en Verkeer - AWV211
 R0000001;71.4;20;71.4;4201;Waals Gewest - Waals Gewest
-R0010001;0;-1;16.7;6;Agentschap Wegen en Verkeer - AWV121
+R0010001;0;-1;14.35;0;Agentschap Wegen en Verkeer - AWV121
 R0020001;78;-98;89.9;99;Agentschap Wegen en Verkeer - AWV121
 R0040002;0.1;-101;61.4;34;Agentschap Wegen en Verkeer - AWV411
 R0060002;0.7;-79;9.3;67;Agentschap Wegen en Verkeer - AWV112
@@ -1294,3 +1294,7 @@ T7749021;0;0;0;801;Agentschap Wegen en Verkeer - AWV720
 N0100001;0;0;3.4;0;BRABO I
 N0120001;4.3;0;6.1;0;BRABO I
 N1120001;0;0;1.2;0;BRABO I
+R0010001;14.35;0;16.706;0;LANTIS
+A0110002;64.1;-332;68.0;0;LANTIS
+N0700001;48.5;0;49.1;20;LANTIS
+A0110002;49.1;20;49.8;1;Agentschap Wegen en Verkeer - AWV121
