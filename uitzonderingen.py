@@ -61,6 +61,7 @@ def add_exceptions(segmenten):
     n10_brabo.eind.positie = 3.4
     n10_brabo.eind.opschrift = 3.4
     n10_brabo.eind.afstand = 0
+    n10_brabo.lengte = n10_brabo.eind.positie - n10_brabo.begin.positie
     segmenten.append(n10_brabo)
 
     n12_brabo = EventDataSegment()
@@ -75,6 +76,7 @@ def add_exceptions(segmenten):
     n12_brabo.eind.positie = 6.1
     n12_brabo.eind.opschrift = 6.1
     n12_brabo.eind.afstand = 0
+    n12_brabo.lengte = n12_brabo.eind.positie - n12_brabo.begin.positie
     segmenten.append(n12_brabo)
 
     n112_brabo = EventDataSegment()
@@ -89,6 +91,7 @@ def add_exceptions(segmenten):
     n112_brabo.eind.positie = 1.2
     n112_brabo.eind.opschrift = 1.2
     n112_brabo.eind.afstand = 0
+    n112_brabo.lengte = n112_brabo.eind.positie - n112_brabo.begin.positie
     segmenten.append(n112_brabo)
 
     r1_lantis = EventDataSegment()
@@ -103,6 +106,7 @@ def add_exceptions(segmenten):
     r1_lantis.eind.positie = 16.706
     r1_lantis.eind.opschrift = 16.706
     r1_lantis.eind.afstand = 0
+    r1_lantis.lengte = r1_lantis.eind.positie - r1_lantis.begin.positie
     segmenten.append(r1_lantis)
 
     a11_lantis = EventDataSegment()
@@ -117,6 +121,7 @@ def add_exceptions(segmenten):
     a11_lantis.eind.positie = 68.0
     a11_lantis.eind.opschrift = 68.0
     a11_lantis.eind.afstand = 0
+    a11_lantis.lengte = a11_lantis.eind.positie - a11_lantis.begin.positie
     segmenten.append(a11_lantis)
 
     n70_lantis = EventDataSegment()
@@ -131,6 +136,7 @@ def add_exceptions(segmenten):
     n70_lantis.eind.positie = 49.12
     n70_lantis.eind.opschrift = 49.1
     n70_lantis.eind.afstand = 20
+    n70_lantis.lengte = n70_lantis.eind.positie - n70_lantis.begin.positie
     segmenten.append(n70_lantis)
 
     n70_awv = EventDataSegment()
@@ -145,6 +151,7 @@ def add_exceptions(segmenten):
     n70_awv.eind.positie = 49.801
     n70_awv.eind.opschrift = 49.8
     n70_awv.eind.afstand = 1
+    n70_awv.lengte = n70_awv.eind.positie - n70_awv.begin.positie
     segmenten.append(n70_awv)
 
     return segmenten

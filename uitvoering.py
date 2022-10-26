@@ -5,6 +5,7 @@ import pandas
 from termcolor import colored
 
 from FSConnector import FSConnector
+from JsonToReferentiepuntProcessor import JsonToReferentiepuntProcessor
 from JsonToWegsegmentProcessor import JsonToWegsegmentProcessor
 from PostGISConnector import PostGISConnector
 from PostGISToWegsegmentProcessor import PostGISToWegsegmentProcessor
@@ -83,11 +84,28 @@ if __name__ == '__main__':
 
     requester = RequesterFactory.create_requester(settings=settings_manager.settings, auth_type='cert', env='prd')
 
+    # # haal x aantal referentiepunten uit de feature server
+    # fs_c = FSConnector(requester)
+    # start = time.time()
+    # print(colored(f'Connecting to Feature server...', 'green'))
+    # raw_output = fs_c.get_raw_lines(layer="referentiepunten", lines=30000)  # beperkt tot X aantal lijnen
+    # end = time.time()
+    # print(colored(f'Number of lines from Feature server: {len(raw_output)}', 'green'))
+    # print(colored(f'Time to get input from feature server: {round(end - start, 2)}', 'yellow'))
+    #
+    # # verwerk de input van de feature server tot een lijst van EventDataSegment objecten
+    # start = time.time()
+    # processor = JsonToReferentiepuntProcessor()
+    # referentiepunten = processor.process_json(raw_output)
+    # end = time.time()
+    # print(
+    #     colored(f'Time to process feature server lines to Python dataclass objects: {round(end - start, 2)}', 'yellow'))
+
     # haal x aantal afschermende constructies uit de feature server
     fs_c = FSConnector(requester)
     start = time.time()
     print(colored(f'Connecting to Feature server...', 'green'))
-    raw_output = fs_c.get_raw_lines(layer="beheersegmenten", lines=30000)  # beperkt tot X aantal lijnen
+    raw_output = fs_c.get_raw_lines(layer="beheersegmenten", lines=300)  # beperkt tot X aantal lijnen
     end = time.time()
     print(colored(f'Number of lines from Feature server: {len(raw_output)}', 'green'))
     print(colored(f'Time to get input from feature server: {round(end - start, 2)}', 'yellow'))
