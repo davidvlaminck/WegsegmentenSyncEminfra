@@ -1,10 +1,13 @@
 import platform
+import re
 import time
 
 import pandas
+import shapely
 from termcolor import colored
 
 from FSConnector import FSConnector
+from shapely import wkt
 from JsonToReferentiepuntProcessor import JsonToReferentiepuntProcessor
 from JsonToWegsegmentProcessor import JsonToWegsegmentProcessor
 from PostGISConnector import PostGISConnector
@@ -50,7 +53,11 @@ def map_toestand(toestand):
 
 
 def map_schadebeheerder(omschrijving):
-    return omschrijving.split(' - ')[1].replace('district ', '')[0:3]
+    beheerder_in_omschrijving = omschrijving.split(' - ')[1]
+    if 'district' in beheerder_in_omschrijving:
+        return beheerder_in_omschrijving.replace('district ', '')[0:3]
+    else:
+        return beheerder_in_omschrijving.upper()
 
 
 def map_toezichtgroep(omschrijving):
@@ -63,7 +70,10 @@ def map_toezichtgroep(omschrijving):
         '7': 'WLB_DISTRICT'
     }
     try:
-        return mapping[schadebeheerder[0:1]]
+        if re.match(r'\d{3}', schadebeheerder):
+            return mapping[schadebeheerder[0:1]]
+        else:
+            return schadebeheerder
     except KeyError:
         schadebeheerder = omschrijving.split(' - ')[1].replace('district ', '')
         print(colored(f'no mapping for {omschrijving}', 'red'))
@@ -105,7 +115,7 @@ if __name__ == '__main__':
     fs_c = FSConnector(requester)
     start = time.time()
     print(colored(f'Connecting to Feature server...', 'green'))
-    raw_output = fs_c.get_raw_lines(layer="beheersegmenten", lines=300)  # beperkt tot X aantal lijnen
+    raw_output = fs_c.get_raw_lines(layer="beheersegmenten", lines=30000)  # beperkt tot X aantal lijnen
     end = time.time()
     print(colored(f'Number of lines from Feature server: {len(raw_output)}', 'green'))
     print(colored(f'Time to get input from feature server: {round(end - start, 2)}', 'yellow'))
@@ -169,7 +179,7 @@ if __name__ == '__main__':
 
     print(colored(f'Number of event data objects: {len(list_segmenten)}', 'green'))
 
-    gebied_exceptions = ['BRABO I']
+    gebied_exceptions = ['BRABO1', 'LANTIS']
     segmenten_WDB = list(
         filter(lambda x: x.gebied.startswith('Agentschap Wegen en Verkeer') or x.gebied in gebied_exceptions,
                list_segmenten))
@@ -232,9 +242,14 @@ if __name__ == '__main__':
             if c.omschrijving is None or ' - ' not in c.omschrijving:
                 c.match_score += 2.0
             else:
-                district_in_omschrijving = c.omschrijving.split(' - ')[1][9:12]
-                if beheerder != district_in_omschrijving:
-                    c.match_score += 1.0
+                beheerder_in_omschrijving = c.omschrijving.split(' - ')[1]
+                if 'district' in beheerder_in_omschrijving:
+                    district_in_omschrijving = beheerder_in_omschrijving[9:12]
+                    if beheerder != district_in_omschrijving:
+                        c.match_score += 1.0
+                else:
+                    if beheerder.upper() != beheerder_in_omschrijving.upper():
+                        c.match_score += 1.0
 
         sorted_candidates = list(sorted(candidates, key=lambda x: x.match_score))
 
@@ -246,7 +261,8 @@ if __name__ == '__main__':
             continue
         else:
             best_match = sorted_candidates[0]
-            print(colored(f'{best_match.naampad}: found reasonable match with a score of {best_match.match_score}', 'green'))
+            print(colored(f'{best_match.naampad}: found reasonable match with a score of {best_match.match_score}',
+                          'green'))
             # print(segment_WDB.wktLineStringZ)
 
             matched_eminfra_data.append(best_match)
@@ -261,11 +277,18 @@ if __name__ == '__main__':
                 print(colored(f'{best_match.naampad}: ident8 not correct: {segment_WDB.ident8} vs {best_match.ident8}',
                               'red'))
 
-            beheerder = segment_WDB.gebied.replace('Agentschap Wegen en Verkeer - AWV', '')
-            district_in_omschrijving = best_match.omschrijving.split(' - ')[1][9:12]
             schadebeheerder = best_match.beheerder_referentie
             beheerobject = best_match.naampad.split('/')[0]
-            naampad_beheerder = beheerobject.split('.')[1][0:3]
+            if 'Agentschap Wegen en Verkeer - AWV' in segment_WDB.gebied:
+                beheerder = segment_WDB.gebied.replace('Agentschap Wegen en Verkeer - AWV', '')
+                district_in_omschrijving = best_match.omschrijving.split(' - ')[1][9:12]
+                naampad_beheerder = beheerobject.split('.')[1][0:3]
+            else:
+                beheerder = segment_WDB.gebied
+                district_in_omschrijving = best_match.omschrijving.split(' - ')[1].upper()
+                naampad_beheerder = beheerobject.split('.')[1]
+                if naampad_beheerder == 'BRABO':
+                    naampad_beheerder = 'BRABO1'
 
             if best_match.bestek is None:
                 print(colored(f'{best_match.naampad}: bestek not found, should be {beheerder} '
@@ -302,8 +325,14 @@ if __name__ == '__main__':
 
                 df = pandas.concat([df, df1])
 
-            simplified = segment_WDB.shape.simplify(1)
-            lines_csv.append(f'{segment_WDB.id};{best_match.naampad};orig;{simplified}')
+            if segment_WDB.override_geometry:
+                segment_WDB.shape = shapely.wkt.loads(segment_WDB.wktLineStringZ).simplify(1)
+                simplified = shapely.wkt.dumps(segment_WDB.shape, rounding_precision=3)
+            else:
+                if segment_WDB.shape is None:
+                    print(colored(f"this has no shape: {segment_WDB}", 'red'))
+                else:
+                    simplified = segment_WDB.shape.simplify(1)
             lines_csv.append(f'{segment_WDB.id};{best_match.naampad};simplified;{simplified}')
 
             # if segment_WDB.wktLineStringZ != best_match.geometrie:
@@ -333,9 +362,10 @@ if __name__ == '__main__':
         else:
             eminfra_data.remove(matched_eminfra)
 
-    print(colored(f'count remaining eminfra data: {len(eminfra_data)}','red'))
+    print(colored(f'count remaining eminfra data: {len(eminfra_data)}', 'red'))
     for leftover_eminfra in eminfra_data:
-        print(str(leftover_eminfra) + f' link: https://apps.mow.vlaanderen.be/eminfra/installaties/{leftover_eminfra.uuid}')
+        print(
+            str(leftover_eminfra) + f' link: https://apps.mow.vlaanderen.be/eminfra/installaties/{leftover_eminfra.uuid}')
     print(colored(f'count remaining WDB data: {len(segmenten_WDB)}, not using:', 'red'))
     for leftover_wdb in segmenten_WDB:
         print(leftover_wdb)
