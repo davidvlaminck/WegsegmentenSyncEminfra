@@ -20,6 +20,7 @@ class EventDataSegment:
     creatiedatum: date = None
     wijzigingsdatum: date = None
     shape: BaseGeometry = None
+    override_geometry = False
 
     def __str__(self):
         return f"EventDataSegment(ident8='{self.ident8}, begin=WegLocatieData(positie={self.begin.positie}), eind=WegLocatieData(positie={self.eind.positie}), gebied='{self.gebied}', id='{self.id}', lengte={self.lengte})"
