@@ -158,6 +158,7 @@ if __name__ == '__main__':
     end = time.time()
     print(colored(f'Time to remove one side (double data): {round(end - start, 2)}', 'yellow'))
 
+    # add exceptions
     list_segmenten = add_exceptions(list_segmenten)
 
     with open("segmenten.csv", "w") as f:
@@ -244,9 +245,10 @@ if __name__ == '__main__':
             print(sorted_candidates[0])
             continue
         else:
-            print(colored(f'found reasonable match with a score of {sorted_candidates[0].match_score}', 'green'))
-            # print(segment_WDB.wktLineStringZ)
             best_match = sorted_candidates[0]
+            print(colored(f'{best_match.naampad}: found reasonable match with a score of {best_match.match_score}', 'green'))
+            # print(segment_WDB.wktLineStringZ)
+
             matched_eminfra_data.append(best_match)
             matched_segments_WDB.append(segment_WDB)
 
@@ -331,8 +333,12 @@ if __name__ == '__main__':
         else:
             eminfra_data.remove(matched_eminfra)
 
-    print(f'count remaining eminfra data: {len(eminfra_data)}')
-    print(f'count remaining WDB data: {len(segmenten_WDB)}')
+    print(colored(f'count remaining eminfra data: {len(eminfra_data)}','red'))
+    for leftover_eminfra in eminfra_data:
+        print(str(leftover_eminfra) + f' link: https://apps.mow.vlaanderen.be/eminfra/installaties/{leftover_eminfra.uuid}')
+    print(colored(f'count remaining WDB data: {len(segmenten_WDB)}, not using:', 'red'))
+    for leftover_wdb in segmenten_WDB:
+        print(leftover_wdb)
 
     if len(df) > 0:
         df.to_excel('beheersegmenten_correcties.xlsx')
