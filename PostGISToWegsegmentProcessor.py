@@ -45,6 +45,7 @@ class PostGISToWegsegmentProcessor:
                 data_segment.begin.positie = float(van_str)
                 tot_str = van_tot[1].replace('kmpt ', '')
                 data_segment.eind.positie = float(tot_str)
-                data_segment.ident8 = parts[3]
+                data_segment.begin.ident8 = parts[3]
+                data_segment.eind.ident8 = parts[3]
         except:
             print(colored('Not a valid omschrijving: ' + data_segment.omschrijving, 'red'))

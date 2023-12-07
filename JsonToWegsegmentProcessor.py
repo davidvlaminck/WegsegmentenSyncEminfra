@@ -9,6 +9,38 @@ from EventDataSegment import EventDataSegment
 from WegLocatieData import WegLocatieData
 
 
+def combine(current, other):
+    combined = current
+    combined.eind = other.eind
+    combined.lengte = combined.eind.positie - combined.begin.positie
+    combined.creatiedatum = max(combined.creatiedatum, other.creatiedatum)
+    combined.wijzigingsdatum = max(combined.wijzigingsdatum, other.wijzigingsdatum)
+
+    try:
+        lines_list = []
+        for shape in [current.shape, other.shape]:
+            if isinstance(shape, MultiLineString):
+                lines_list.extend(shape)
+            else:
+                lines_list.append(shape)
+
+        multi_line = geometry.MultiLineString(lines_list)
+
+        if current.shape.intersects(other.shape):
+            merged_line = ops.linemerge(multi_line)
+            combined.shape = merged_line
+            # print(colored('combined to a merged line', 'green'))
+        else:
+            combined.shape = multi_line
+            # print(colored('combined to multiline', 'green'))
+
+        combined.wktLineStringZ = shapely.wkt.dumps(combined.shape, rounding_precision=3)
+    except:
+        print(colored(f'could not combine geometries', 'red'))
+
+    return combined
+
+
 class JsonToWegsegmentProcessor:
     def process_json_object_or_list(self, dict_list, is_list=False):
         if not is_list:
@@ -46,9 +78,12 @@ class JsonToWegsegmentProcessor:
             dict_list["properties"]["locatie"]["eind"]["geometry"]["coordinates"])
         event_data_segment.id = dict_list["properties"]["id"]
 
+        if event_data_segment.begin.ident8 == 'N0010001':
+            pass
+
         event_data_segment.eigenbeheer = dict_list["properties"]["eigenbeheer"]
         event_data_segment.gebied = dict_list["properties"]["gebied"]
-        event_data_segment.lengte = dict_list["properties"]["lengte"]
+        event_data_segment.lengte = event_data_segment.eind.positie - event_data_segment.begin.positie
         event_data_segment.creatiedatum = dict_list["properties"]["creatiedatum"]  # date
         event_data_segment.wijzigingsdatum = dict_list["properties"]["wijzigingsdatum"]  # date
         return event_data_segment
@@ -57,9 +92,12 @@ class JsonToWegsegmentProcessor:
         returnlist = []
 
         for el in json_list:
-            dict_list = json.loads(el.replace('\n', ''))
-            eventDataAC = self.process_json_object_or_list(dict_list)
-            returnlist.append(eventDataAC)
+            try:
+                dict_list = json.loads(el.replace('\n', ''))
+                eventDataAC = self.process_json_object_or_list(dict_list)
+                returnlist.append(eventDataAC)
+            except:
+                print(el)
 
         return returnlist
 
@@ -80,80 +118,49 @@ class JsonToWegsegmentProcessor:
 
     @staticmethod
     def sort_list(list_segmenten):
-        return list(sorted(list_segmenten, key=lambda x: (x.ident8, x.begin.positie)))
+        return list(sorted(list_segmenten, key=lambda x: (x.begin.ident8, x.begin.positie)))
 
     @staticmethod
     def clean_list(list_segmenten):
         list_segmenten = JsonToWegsegmentProcessor.sort_list(list_segmenten)
 
         new_list = []
-        for el in list_segmenten:
-            new_list.append(el)
+        segmenten_count = len(list_segmenten)
 
-        skip_next = False
-        for i in range(len(list_segmenten) - 1):
-            if skip_next:
-                skip_next = False
+        for i in range(segmenten_count - 1):
+            current = list_segmenten[i]
+            if current is None:
                 continue
-            if list_segmenten[i].ident8 != list_segmenten[i + 1].ident8:
-                continue
-            if list_segmenten[i].gebied != list_segmenten[i + 1].gebied:
-                continue
-            if list_segmenten[i].eind.positie != list_segmenten[i + 1].begin.positie:
-                if abs(list_segmenten[i].eind.positie - list_segmenten[i + 1].begin.positie) > 0.050:
-                    continue
-            skip_next = True
-            if list_segmenten[i] in new_list:
-                new_list.remove(list_segmenten[i])
-            if list_segmenten[i + 1] in new_list:
-                new_list.remove(list_segmenten[i + 1])
 
-            combined = list_segmenten[i]
-            combined.eind = list_segmenten[i + 1].eind
-            combined.lengte += list_segmenten[i + 1].lengte
-            combined.creatiedatum = max(combined.creatiedatum, list_segmenten[i + 1].creatiedatum)
-            combined.wijzigingsdatum = max(combined.wijzigingsdatum, list_segmenten[i + 1].wijzigingsdatum)
+            next_i = i
+            while True:
+                next_i += 1
+                if current.begin.ident8 != list_segmenten[next_i].begin.ident8:
+                    break
+                if current.gebied != list_segmenten[next_i].gebied:
+                    break
+                if current.eind.positie != list_segmenten[next_i].begin.positie:
+                    if abs(current.eind.positie - list_segmenten[next_i].begin.positie) > 0.050:
+                        break
 
-            try:
-                lines_list = []
-                if isinstance(list_segmenten[i].shape, MultiLineString):
-                    lines_list.extend(list_segmenten[i].shape)
-                else:
-                    lines_list.append(list_segmenten[i].shape)
-                if isinstance(list_segmenten[i + 1].shape, MultiLineString):
-                    lines_list.extend(list_segmenten[i + 1].shape)
-                else:
-                    lines_list.append(list_segmenten[i + 1].shape)
+                current = combine(current, list_segmenten[next_i])
+                list_segmenten[next_i] = None
 
-                for line in lines_list:
-                    if not isinstance(line, LineString):
-                        pass
+            new_list.append(current)
 
-                multi_line = geometry.MultiLineString(lines_list)
-
-                if list_segmenten[i].shape.intersects(list_segmenten[i + 1].shape):
-                    merged_line = ops.linemerge(multi_line)
-                    combined.shape = merged_line
-                    # print(colored('combined to a merged line', 'green'))
-                else:
-                    combined.shape = multi_line
-                    # print(colored('combined to multiline', 'green'))
-
-                combined.wktLineStringZ = shapely.wkt.dumps(combined.shape, rounding_precision=3)
-            except:
-                print(colored(f'could not combine geometries', 'red'))
-
-            new_list.append(combined)
+        if list_segmenten[-1] is not None:
+            new_list.append(list_segmenten[-1])
 
         return new_list
 
     @staticmethod
     def keep_one_side(list_segmenten, margin=0.25):
-        list_segmenten = JsonToWegsegmentProcessor.sort_list(list_segmenten)
-
-        ups = list(filter(lambda s: s.ident8[-1] == '1', list_segmenten))
+        ups = list(filter(lambda s: s.begin.ident8[-1] == '1', list_segmenten))
         for up_segment in ups:
-            down_candidates = list(filter(lambda s: s.ident8 == (up_segment.ident8[:-1] + '2'), list_segmenten))
+            if up_segment.id == '59608':
+                pass
+            down_candidates = list(
+                filter(lambda s: s.begin.ident8 == (up_segment.begin.ident8[:-1] + '2'), list_segmenten))
             for candidate in down_candidates:
                 if candidate.gebied != up_segment.gebied:
                     continue
@@ -170,11 +177,11 @@ class JsonToWegsegmentProcessor:
                     if up_from > down_from:
                         up_to = up_to - up_from + down_from
                     elif down_from > up_from:
-                        up_to = up_to - down_from + up_from
+                        up_to = up_to + down_from - up_from
 
-                    if down_to > up_to:
+                    if down_to > up_to and up_segment in list_segmenten:
                         list_segmenten.remove(up_segment)
-                    elif down_to < up_to:
+                    elif down_to < up_to and candidate in list_segmenten:
                         list_segmenten.remove(candidate)
 
         return list_segmenten
@@ -184,15 +191,15 @@ class JsonToWegsegmentProcessor:
         new_list = []
         for el in list_segmenten:
             try:
-                if el.ident8[4:7] == '000':
+                if el.begin.ident8[4:7] == '000':
                     new_list.append(el)
-                elif el.ident8[4] == '9':
-                    if el.ident8[5] in ['0', '1']:
+                elif el.begin.ident8[4] == '9':
+                    if el.begin.ident8[5] in ['0', '1']:
                         new_list.append(el)
-                    elif el.ident8[5] == '2':
-                        if el.ident8[6] in ['0', '1', '2', '3', '4', '5', '6']:
+                    elif el.begin.ident8[5] == '2':
+                        if el.begin.ident8[6] in ['0', '1', '2', '3', '4', '5', '6']:
                             new_list.append(el)
             except:
-                print(f'problem with id: {el.id} and ident8: {el.ident8}')
+                print(f'problem with id: {el.id} and ident8: {el.begin.ident8}')
 
         return new_list

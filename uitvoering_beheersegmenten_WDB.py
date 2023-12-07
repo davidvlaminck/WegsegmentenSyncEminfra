@@ -36,7 +36,7 @@ if __name__ == '__main__':
     end = time.time()
     print(colored(f'Time to process feature server lines to Python dataclass objects: {round(end - start, 2)}', 'yellow'))
 
-    #filter_ids = ['8797', '8796', '8798']
+    filter_ids = ['8797', '8796', '8798']
     #list_segmenten = list(filter(lambda x: x.id in filter_ids, list_segmenten))
 
     start = time.time()
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     with open("segmenten.csv", "w") as f:
         f.write('ident8;begin.opschrift;begin.afstand;eind.opschrift;eind.afstand;gebied\n')
         for segment in list_segmenten:
-            f.write(f"{segment.ident8};{segment.begin.opschrift};{segment.begin.afstand};{segment.eind.opschrift};{segment.eind.afstand};{segment.gebied}\n")
+            f.write(f"{segment.begin.ident8};{segment.begin.opschrift};{segment.begin.afstand};{segment.eind.opschrift};{segment.eind.afstand};{segment.gebied}\n")
 
     print(colored(f'Number of event data objects: {len(list_segmenten)}', 'green'))
 

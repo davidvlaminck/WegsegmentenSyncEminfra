@@ -115,7 +115,7 @@ if __name__ == '__main__':
     fs_c = FSConnector(requester)
     start = time.time()
     print(colored(f'Connecting to Feature server...', 'green'))
-    raw_output = fs_c.get_raw_lines(layer="beheersegmenten", lines=30000)  # beperkt tot X aantal lijnen
+    raw_output = fs_c.get_raw_lines(layer="beheersegmenten", lines=30000, sort='properties.ident8')  # beperkt tot X aantal lijnen
     end = time.time()
     print(colored(f'Number of lines from Feature server: {len(raw_output)}', 'green'))
     print(colored(f'Time to get input from feature server: {round(end - start, 2)}', 'yellow'))
@@ -130,7 +130,7 @@ if __name__ == '__main__':
 
     for el in list(filter(lambda x: x.id in ['58745', '58771', '58639', '58681', '58646', '58675', '58833', '58765',
                                              '59593', '56392', '56682', '58721', '57436', '56693', '56608', '56501',
-                                             '56674'] and x.lengte <= 5, list_segmenten)):
+                                             '56674', '58655'] and x.lengte <= 0.006, list_segmenten)):
         list_segmenten.remove(el)
         # EventDataSegment(ident8='N0089072, begin=WegLocatieData(positie=1.846), eind=WegLocatieData(positie=1.847), gebied='Agentschap Wegen en Verkeer - AWV315', id='56674', lengte=1)
         # EventDataSegment(ident8='N0580001, begin=WegLocatieData(positie=27.385), eind=WegLocatieData(positie=27.387), gebied='Agentschap Wegen en Verkeer - AWV313', id='56501', lengte=2)
@@ -149,16 +149,12 @@ if __name__ == '__main__':
         # EventDataSegment(ident8='N4620002, begin=WegLocatieData(positie=11.625), eind=WegLocatieData(positie=11.626), gebied='Agentschap Wegen en Verkeer - AWV415', id='58771', lengte=1)
         # EventDataSegment(ident8='N4170002, begin=WegLocatieData(positie=3.799), eind=WegLocatieData(positie=3.801), gebied='Agentschap Wegen en Verkeer - AWV415', id='58639', lengte=2)
         # EventDataSegment(ident8='N4170001, begin=WegLocatieData(positie=3.239), eind=WegLocatieData(positie=3.241), gebied='Agentschap Wegen en Verkeer - AWV415', id='58681', lengte=2)
+        # EventDataSegment(ident8='N4669011, begin=WegLocatieData(positie=0), eind=WegLocatieData(positie=0.006), gebied='Agentschap Wegen en Verkeer - AWV412', id='58655', lengte=0.006)
+    list_segmenten = processor.remove_non_main_roads(list_segmenten)
 
     start = time.time()
-    list_segmenten = processor.remove_non_main_roads(list_segmenten)
     print(f'number of segments: {len(list_segmenten)}')
-    for i in range(5):
-        iter_start = time.time()
-        list_segmenten = processor.clean_list(list_segmenten)
-        iter_end = time.time()
-        print(colored(f'Time for iteration {i}: {round(iter_end - iter_start, 2)}', 'yellow'))
-        print(f'number of segments: {len(list_segmenten)}')
+    list_segmenten = processor.clean_list(list_segmenten)
     list_segmenten = processor.sort_list(list_segmenten)
     end = time.time()
     print(colored(f'Time to combine Python dataclass objects: {round(end - start, 2)}', 'yellow'))
@@ -168,14 +164,15 @@ if __name__ == '__main__':
     end = time.time()
     print(colored(f'Time to remove one side (double data): {round(end - start, 2)}', 'yellow'))
 
-    # add exceptions
-    list_segmenten = add_exceptions(list_segmenten)
-
     with open("segmenten.csv", "w") as f:
-        f.write('ident8;begin.opschrift;begin.afstand;eind.opschrift;eind.afstand;gebied\n')
+        f.write('ident8;begin.positie;begin.opschrift;begin.afstand;eind.positie;eind.opschrift;eind.afstand;gebied\n')
         for segment in list_segmenten:
             f.write(
-                f"{segment.ident8};{segment.begin.opschrift};{segment.begin.afstand};{segment.eind.opschrift};{segment.eind.afstand};{segment.gebied}\n")
+                f"{segment.begin.ident8};{segment.begin.positie};{segment.begin.opschrift};{segment.begin.afstand};"
+                f"{segment.eind.positie};{segment.eind.opschrift};{segment.eind.afstand};{segment.gebied}\n")
+
+    # add exceptions
+    list_segmenten = add_exceptions(list_segmenten)
 
     print(colored(f'Number of event data objects: {len(list_segmenten)}', 'green'))
 
@@ -227,7 +224,7 @@ if __name__ == '__main__':
 
         sorted_candidates = []
         candidates = list(
-            filter(lambda x: x.actief and x.ident8 is not None and x.ident8.startswith(segment_WDB.ident8[0:7]),
+            filter(lambda x: x.actief and x.begin.ident8 is not None and x.begin.ident8.startswith(segment_WDB.begin.ident8[0:7]),
                    eminfra_data))
         if len(candidates) == 0:
             print(colored('no valid candidates found for: ', 'red'))
@@ -273,8 +270,8 @@ if __name__ == '__main__':
                     f'bad toestand for: {best_match.naampad} link: https://apps.mow.vlaanderen.be/eminfra/installaties/{best_match.uuid}',
                     'red'))
 
-            if segment_WDB.ident8[0:7] != best_match.ident8[0:7]:
-                print(colored(f'{best_match.naampad}: ident8 not correct: {segment_WDB.ident8} vs {best_match.ident8}',
+            if segment_WDB.begin.ident8[0:7] != best_match.begin.ident8[0:7]:
+                print(colored(f'{best_match.naampad}: ident8 not correct: {segment_WDB.begin.ident8} vs {best_match.begin.ident8}',
                               'red'))
 
             schadebeheerder = best_match.beheerder_referentie
@@ -335,23 +332,21 @@ if __name__ == '__main__':
                     simplified = segment_WDB.shape.simplify(1)
             lines_csv.append(f'{segment_WDB.id};{best_match.naampad};simplified;{simplified}')
 
-            # if segment_WDB.wktLineStringZ != best_match.geometrie:
+            # if segment_WDB.begin.ident8 != best_match.ident8:
             #     response = requester.put(
             #         url=f'eminfra/core/api/installaties/{best_match.uuid}/installaties/ops/update-locatie-ident8',
             #         json={
             #             "uuids": [best_match.uuid],
             #             "async": False,
-            #             "ident8": segment_WDB.ident8
+            #             "ident8": segment_WDB.begin.ident8
             #         })
             #     print(response.status_code)
             #
+            # if simplified != best_match.geometrie:
             #     response = requester.put(url=f'eminfra/core/api/installaties/{best_match.uuid}'
             #                                  '/kenmerken/80052ed4-2f91-400c-8cba-57624653db11/geometrie',
             #                              json={"geometrie": str(simplified)})
             #     print(response.status_code)
-            #
-            #
-            # pass
 
     for matched_segment in matched_segments_WDB:
         segmenten_WDB.remove(matched_segment)

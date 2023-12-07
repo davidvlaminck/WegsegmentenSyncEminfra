@@ -5,11 +5,16 @@ class FSConnector:
     def __init__(self, requester):
         self.requester = requester
 
-    def get_raw_lines(self, layer, lines: int = -1) -> list:
+    def get_raw_lines(self, layer, lines: int = -1, sort: str = '') -> list:
 
         url = f'geolatte-nosqlfs/cert/api/databases/featureserver/{layer}/query'
         if lines > -1:
             url += f'?limit={lines}'
+        if sort != '':
+            if '?' not in url:
+                url += f'?sort={sort}'
+            else:
+                url += f'&sort={sort}'
         response = self.requester.get(url)
         if response.status_code == 200:
 
@@ -26,6 +31,6 @@ class FSConnector:
                     corrected_el = corrected_el[:-2]
                 corrected_el = corrected_el.replace("\\'", "'").replace("\\\\n", " ").replace('\\\\"', "'", ) \
                     .replace(r'\xc2\xb1', '+/-').replace(r'\xc3\xa9', 'é').replace(r'\xe2\x80\x98', "'") \
-                    .replace(r'\xe2\x80\x99', "'").replace(r'\xc3\xab', 'ë')
+                    .replace(r'\xe2\x80\x99', "'").replace(r'\xc3\xab', 'ë').replace(r'\xe2\x80\x94', '-')
                 corrected_list.append(corrected_el)
             return corrected_list
