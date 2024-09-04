@@ -111,11 +111,12 @@ if __name__ == '__main__':
     # print(
     #     colored(f'Time to process feature server lines to Python dataclass objects: {round(end - start, 2)}', 'yellow'))
 
-    # haal x aantal afschermende constructies uit de feature server
+    # haal beheersegmenten uit de feature server
     fs_c = FSConnector(requester)
     start = time.time()
     print(colored(f'Connecting to Feature server...', 'green'))
-    raw_output = fs_c.get_raw_lines(layer="beheersegmenten", lines=30000, sort='properties.ident8')  # beperkt tot X aantal lijnen
+    raw_output = fs_c.get_raw_lines(layer="beheersegmenten", lines=30000,
+                                    sort='properties.ident8')  # beperkt tot X aantal lijnen
     end = time.time()
     print(colored(f'Number of lines from Feature server: {len(raw_output)}', 'green'))
     print(colored(f'Time to get input from feature server: {round(end - start, 2)}', 'yellow'))
@@ -178,8 +179,8 @@ if __name__ == '__main__':
 
     gebied_exceptions = ['BRABO1', 'LANTIS']
     segmenten_WDB = list(
-        filter(lambda x: x.gebied.startswith('Agentschap Wegen en Verkeer') or x.gebied in gebied_exceptions,
-               list_segmenten))
+        filter(lambda x: x.gebied.startswith('Agentschap Wegen en Verkeer') or x.gebied in gebied_exceptions and
+                         x.lengte > 0.01, list_segmenten))
 
     # get eminfra objects
     connector = PostGISConnector(host=db_settings['host'], port=db_settings['port'],
@@ -193,7 +194,7 @@ if __name__ == '__main__':
         SELECT * 
         FROM bestekkoppelingen 
             LEFT JOIN bestekken ON bestekken.uuid = bestekkoppelingen.bestekuuid 
-        WHERE bestekkoppelingen.koppelingstatus = 'ACTIEF' AND bestekken.edeltabesteknummer LIKE '%MOW/AWV/2017/10%')
+        WHERE bestekkoppelingen.koppelingstatus = 'actief' AND bestekken.edeltabesteknummer LIKE '%CALAM%')
     SELECT assets.*, assettypes."label", beheerders.referentie, beheerders.naam, locatie.*, identiteiten.gebruikersnaam, koppelingen.aannemernaam, geometrie.wkt_string
         FROM assets 
             LEFT JOIN assettypes ON assets.assettype = assettypes.uuid
@@ -224,7 +225,8 @@ if __name__ == '__main__':
 
         sorted_candidates = []
         candidates = list(
-            filter(lambda x: x.actief and x.begin.ident8 is not None and x.begin.ident8.startswith(segment_WDB.begin.ident8[0:7]),
+            filter(lambda x: x.actief and x.begin.ident8 is not None and x.begin.ident8.startswith(
+                segment_WDB.begin.ident8[0:7]),
                    eminfra_data))
         if len(candidates) == 0:
             print(colored('no valid candidates found for: ', 'red'))
@@ -271,8 +273,9 @@ if __name__ == '__main__':
                     'red'))
 
             if segment_WDB.begin.ident8[0:7] != best_match.begin.ident8[0:7]:
-                print(colored(f'{best_match.naampad}: ident8 not correct: {segment_WDB.begin.ident8} vs {best_match.begin.ident8}',
-                              'red'))
+                print(colored(
+                    f'{best_match.naampad}: ident8 not correct: {segment_WDB.begin.ident8} vs {best_match.begin.ident8}',
+                    'red'))
 
             schadebeheerder = best_match.beheerder_referentie
             beheerobject = best_match.naampad.split('/')[0]

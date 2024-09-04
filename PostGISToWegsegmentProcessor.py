@@ -17,9 +17,9 @@ class PostGISToWegsegmentProcessor:
         event_data_segment.beheerder_voluit = tup[13]
         event_data_segment.omschrijving = tup[16]
         event_data_segment.ident8 = tup[22]
-        event_data_segment.toezichter = tup[34]
-        event_data_segment.bestek = tup[35]
-        event_data_segment.geometrie = tup[36]
+        event_data_segment.toezichter = tup[35]
+        event_data_segment.bestek = tup[36]
+        event_data_segment.geometrie = tup[37]
 
         event_data_segment.begin = WegLocatieData()
         event_data_segment.eind = WegLocatieData()
